@@ -1,0 +1,30 @@
+{
+  "name": "Telegram Node Traffic Notify",
+  "code": "tg_node_traffic_notify",
+  "version": "1.2.0",
+  "description": "Escalating Telegram alerts when a node's monthly traffic reaches configured thresholds (e.g. 80%, 90%, 100%). Reads each node's traffic limit directly from the database.",
+  "author": "Antigravity",
+  "require": {
+    "xboard": ">=1.0.0"
+  },
+  "config": {
+    "tg_bot_token": {
+      "type": "string",
+      "default": "",
+      "label": "Telegram Bot Token",
+      "description": "The bot token obtained from @BotFather."
+    },
+    "tg_chat_id": {
+      "type": "string",
+      "default": "",
+      "label": "Admin Chat ID",
+      "description": "The Telegram Chat ID or Group ID to send notifications to."
+    },
+    "thresholds": {
+      "type": "string",
+      "default": "80,90,100",
+      "label": "Alert Thresholds (%)",
+      "description": "Comma-separated escalating thresholds. Each level triggers a separate notification. Example: 80,90,100"
+    }
+  }
+}

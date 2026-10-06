@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 48 100% 98%; /* #FFFDF5 - Warm Cream */
+    --foreground: 215 25% 17%; /* #1E293B - Slate 800 */
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 17%;
+    --popover: 48 100% 98%;
+    --popover-foreground: 215 25% 17%;
+    --primary: 263 90% 66%; /* Vivid Violet */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 81% 70%; /* Hot Pink */
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 199 89% 48%; /* Sky Blue - more distinct from cream bg */
+    --tertiary-foreground: 215 25% 17%;
+    --quaternary: 158 64% 52%; /* Emerald/Mint */
+    --quaternary-foreground: 215 25% 17%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 263 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 0 0% 100%;
+    --ring: 263 90% 66%;
+    --radius: 1rem;
+    --font-sans: system-ui, sans-serif;
+    --font-heading: system-ui, sans-serif;
+    --font-mono: "Noto Sans Mono CJK SC", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    
+    /* Pop Shadows */
+    --shadow-pop: 4px 4px 0px 0px #1E293B;
+    --shadow-pop-hover: 6px 6px 0px 0px #1E293B;
+    --shadow-pop-active: 2px 2px 0px 0px #1E293B;
+    --shadow-pop-lg: 8px 8px 0px 0px #1E293B;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 263 90% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 81% 70%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 263 90% 66%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 263 90% 66%;
+    
+    --shadow-pop: 4px 4px 0px 0px #000000;
+    --shadow-pop-hover: 6px 6px 0px 0px #000000;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    position: relative;
+  }
+
+  .small-caps {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.15em] text-accent;
+  }
+}
+
+@layer utilities {
+  .candy-button {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border-2 border-foreground bg-primary px-8 py-4 font-heading font-bold text-primary-foreground transition-all duration-300 ease-bounce;
+    box-shadow: var(--shadow-pop);
+  }
+
+  .candy-button:hover {
+    @apply -translate-x-[2px] -translate-y-[2px];
+    box-shadow: var(--shadow-pop-hover);
+  }
+
+  .candy-button:active {
+    @apply translate-x-[2px] translate-y-[2px];
+    box-shadow: var(--shadow-pop-active);
+  }
+
+  .sticker-card {
+    @apply rounded-2xl border-2 border-foreground bg-card p-8 transition-all duration-300 ease-bounce;
+    box-shadow: var(--shadow-pop);
+  }
+
+  .sticker-card:hover {
+    @apply -rotate-1 scale-[1.02];
+    box-shadow: var(--shadow-pop-hover);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(var(--border) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .blob-radius {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+
+@media (max-width: 1150px) {
+  .frame {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 1 auto;
+  }
+
+  .frame__tags {
+    margin-top: auto;
+  }
+}
+
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

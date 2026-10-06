@@ -1,0 +1,37 @@
+export interface SiteConfig {
+  name: string
+  description: string
+  url: string
+  ipCheckUrl: string
+  telegramBot: string
+  crispId: string
+  links: {
+    twitter: string
+    github: string
+    tiktok?: string
+    thread?: string
+    ins?: string
+    discord?: string
+    telegram: string
+    ipCheck: string
+  }
+}
+
+export const siteConfig: SiteConfig = {
+  name: 'Supaboard',
+  description: 'Supaboard 提供稳定、高速的全球网络加速服务，支持 IPLC/IEPL 专线，解锁流媒体与 ChatGPT，为您提供无忧的互联网访问体验。',
+  url: 'https://www.supaboard.cc',
+  ipCheckUrl: 'https://ip.supaboard.cc',
+  telegramBot: 'https://telegram.me/supaboard_2_bot',
+  crispId: 'bd8eb971-40f9-4966-82ee-b2ef596f4583',
+  links: {
+    twitter: 'https://x.com/intent/follow?screen_name=Supaboard00',
+    github: 'https://github.com/buoooou/v2ray-clash-clients-download',
+    tiktok: 'https://www.tiktok.com/@buoooou',
+    thread: 'https://www.threads.net/@zhangkuo92',
+    ins: 'https://www.instagram.com/zhangkuo92',
+    discord: 'https://discord.gg/nNbB7CpSue',
+    telegram: 'https://telegram.me/+IXFv_lGI_EUzYWNl',
+    ipCheck: 'https://ip.supaboard.cc',
+  },
+}

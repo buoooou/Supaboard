@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
+  <title>Supaboard (dev)</title>
+  <script>
+    // 仅用于本地开发；线上由 dashboard.blade.php 注入
+    window.routerBase = '/'
+    window.settings = {
+      title: 'Supaboard',
+      assets_path: '/theme/Supaboard/assets',
+      version: 'dev',
+      description: '稳定高速的全球网络加速服务',
+      logo: '',
+      theme: {
+        default_mode: 'light',
+        landing_url: 'https://www.supaboard.cc',
+        support_url: '',
+        download_url: 'https://www.supaboard.cc/download',
+      },
+      i18n: ['zh-CN', 'zh-TW', 'en-US'],
+    }
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

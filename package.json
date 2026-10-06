@@ -1,4 +1,11 @@
 {
+  "name": "supaboard-project",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --dir theme-src/supaboard run dev",
+    "build": "pnpm --dir theme-src/supaboard run build",
+    "package": "pnpm --dir theme-src/supaboard run package"
+  },
   "dependencies": {
     "chokidar": "^4.0.3"
   }

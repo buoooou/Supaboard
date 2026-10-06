@@ -1,0 +1,30 @@
+{
+  "name": "supaboard-theme",
+  "private": true,
+  "version": "1.0.3",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "typecheck": "vue-tsc --noEmit",
+    "package": "pnpm run build && node scripts/package.mjs"
+  },
+  "dependencies": {
+    "markdown-it": "^14.3.2",
+    "qrcode": "^1.5.4",
+    "vue": "^3.5.43",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.2.0",
+    "@types/node": "^26.6.4",
+    "@types/qrcode": "^1.5.6",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.29",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.6.3",
+    "vite": "^6.4.4",
+    "vue-tsc": "^2.2.12"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Telegram Node Monitor",
+  "code": "tg_node_monitor",
+  "version": "2.0.0",
+  "description": "Periodically checks active servers using Globalping API to verify TCP connectivity from Chinese probes and alerts via Telegram.",
+  "author": "Antigravity",
+  "require": {
+    "xboard": ">=1.0.0"
+  },
+  "config": {
+    "tg_bot_token": {
+      "type": "string",
+      "default": "",
+      "label": "Telegram Bot Token",
+      "description": "The bot token obtained from @BotFather."
+    },
+    "tg_chat_id": {
+      "type": "string",
+      "default": "",
+      "label": "Admin Chat ID",
+      "description": "The Telegram Chat ID or Group ID to send notifications to."
+    },
+    "check_interval": {
+      "type": "string",
+      "default": "15",
+      "label": "Check Interval (Minutes)",
+      "description": "How often to check node connectivity in minutes (e.g. 5, 10, 15, 30, 60)."
+    },
+    "fail_threshold_percent": {
+      "type": "string",
+      "default": "50",
+      "label": "Failure Threshold (%)",
+      "description": "Trigger alert if this percentage or more of Chinese probes fail to connect (e.g. 50)."
+    },
+    "globalping_token": {
+      "type": "string",
+      "default": "",
+      "label": "Globalping API Token (Optional)",
+      "description": "Optional API token from globalping.io dashboard. Provides higher rate limits. Leave empty for anonymous access."
+    },
+    "cn_probe_limit": {
+      "type": "string",
+      "default": "5",
+      "label": "CN Probe Count",
+      "description": "Number of Chinese probes to use per check (1-10). More probes = more accurate but uses more API quota."
+    }
+  }
+}

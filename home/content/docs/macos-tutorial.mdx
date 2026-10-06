@@ -1,0 +1,64 @@
+---
+title: macOS 使用教程
+description: "macOS 使用 Clash Verge Rev 配置 Supaboard 订阅的完整指南：下载安装与解决安全提示、导入订阅链接、选择节点连接，并解答应用打不开、终端走代理等常见问题。"
+date: "2026-05-03"
+---
+
+本教程将指导您在 macOS 系统上使用 **Clash Verge Rev** 客户端配置 Supaboard 订阅。
+
+## 前置准备
+
+- 一台 macOS 12（Monterey）或更新版本的 Mac
+- 已注册 Supaboard 账号并获取订阅链接
+
+## 第一步：下载 Clash Verge Rev
+
+1. 前往 [Supaboard 下载中心](/download) 下载 **Clash Verge Rev** 的 macOS 版本。
+   - **Intel 芯片 Mac**：下载 `x64` 版本
+   - **Apple Silicon (M1/M2/M3/M4) Mac**：下载 `aarch64` 版本
+2. 打开 `.dmg` 文件，将应用拖入 **Applications** 文件夹。
+3. 首次打开时，macOS 可能提示「无法打开，因为无法验证开发者」。
+
+### 解决安全提示
+
+在终端运行以下命令，然后重新打开应用：
+
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/Clash\ Verge.app
+```
+
+## 第二步：导入订阅链接
+
+1. 打开 Clash Verge Rev。
+2. 点击左侧 **「订阅」**。
+3. 粘贴您的 Supaboard 订阅链接，点击 **「导入」**。
+4. 等待节点列表刷新完毕。
+
+## 第三步：选择节点并连接
+
+1. 进入 **「代理」** 页面，选择延迟低的节点。
+2. 开启 **「系统代理」** 即可。
+
+> **提示**：macOS 的 TUN 模式需要授予管理员权限。首次开启时会弹出密码框，输入开机密码即可。
+
+## 常见问题
+
+### 1. 应用打不开
+运行上述 `xattr` 命令后重试。如果仍然失败，前往 **系统设置 → 隐私与安全性 → 安全性**，点击「仍然允许」。
+
+### 2. 系统代理开启后，Safari 可以用但其他软件不行
+请开启 **TUN 模式**。Safari 遵循系统代理设置，但部分应用（如 Terminal、Telegram）不走系统代理。
+
+### 3. 如何让终端也走代理？
+在终端中执行：
+
+```bash
+export https_proxy=http://127.0.0.1:7897
+export http_proxy=http://127.0.0.1:7897
+```
+
+端口号以 Clash Verge Rev 设置中的「混合端口」为准。
+
+---
+
+需要更多帮助？请加入 [Telegram 交流群](https://telegram.me/+IXFv_lGI_EUzYWNl)。

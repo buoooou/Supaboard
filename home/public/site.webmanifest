@@ -1,0 +1,20 @@
+{
+  "name": "Supaboard",
+  "short_name": "Supaboard",
+  "description": "Supaboard 提供稳定、高速的全球网络加速服务",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#6f3cff",
+  "background_color": "#FFFDF5",
+  "display": "standalone"
+}

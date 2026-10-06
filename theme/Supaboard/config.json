@@ -1,0 +1,14 @@
+{
+  "name": "Supaboard",
+  "description": "Supaboard - 现代化新拟物风格用户端与落地页主题",
+  "version": "1.0.3",
+  "images": "",
+  "configs": [
+    {
+      "label": "自定义页脚HTML",
+      "placeholder": "可以实现客服JS代码的加入等",
+      "field_name": "custom_html",
+      "field_type": "textarea"
+    }
+  ]
+}

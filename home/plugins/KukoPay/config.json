@@ -1,0 +1,8 @@
+{
+    "name": "KukoPay",
+    "code": "kukopay",
+    "type": "payment",
+    "version": "1.0.0",
+    "description": "KukoPay 收款插件",
+    "author": "Mark"
+}

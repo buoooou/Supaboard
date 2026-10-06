@@ -1,0 +1,108 @@
+{
+  "name": "Stalwart Marketing",
+  "code": "stalwart_marketing",
+  "version": "1.0.0",
+  "description": "Use a self-hosted Stalwart JMAP API to send batch marketing emails.",
+  "author": "YourName",
+  "require": {
+    "xboard": ">=1.0.0"
+  },
+  "config": {
+    "base_url": {
+      "type": "string",
+      "default": "https://email.postion.app/jmap",
+      "label": "Stalwart URL",
+      "description": "Your Stalwart JMAP URL or HTTP origin, for example https://email.postion.app/jmap"
+    },
+    "auth_type": {
+      "type": "string",
+      "default": "basic",
+      "label": "Auth Type",
+      "description": "basic or bearer"
+    },
+    "username": {
+      "type": "string",
+      "default": "",
+      "label": "JMAP Username",
+      "description": "Stalwart account or app username for Basic auth"
+    },
+    "password": {
+      "type": "string",
+      "default": "",
+      "label": "JMAP Password",
+      "description": "Stalwart password or app password for Basic auth"
+    },
+    "bearer_token": {
+      "type": "string",
+      "default": "",
+      "label": "Bearer Token",
+      "description": "OAuth bearer token when auth_type is bearer"
+    },
+    "account_id": {
+      "type": "string",
+      "default": "bo",
+      "label": "JMAP Account ID",
+      "description": "Optional. Leave empty to use the primary mail account from the JMAP session."
+    },
+    "identity_id": {
+      "type": "string",
+      "default": "b",
+      "label": "JMAP Identity ID",
+      "description": "Optional. Leave empty to use the first identity returned by Identity/get."
+    },
+    "draft_mailbox_id": {
+      "type": "string",
+      "default": "e",
+      "label": "Draft Mailbox ID",
+      "description": "Optional. Leave empty to use the mailbox whose JMAP role is drafts."
+    },
+    "from_email": {
+      "type": "string",
+      "default": "service@postion.app",
+      "label": "From Email",
+      "description": "Default sender email address"
+    },
+    "from_name": {
+      "type": "string",
+      "default": "Supaboard",
+      "label": "From Name",
+      "description": "Default sender display name"
+    },
+    "reply_to": {
+      "type": "string",
+      "default": "",
+      "label": "Reply-To",
+      "description": "Optional reply-to email address"
+    },
+    "batch_size": {
+      "type": "number",
+      "default": 20,
+      "label": "Batch Size",
+      "description": "Maximum recipients submitted to Stalwart in one JMAP request"
+    },
+    "max_send_recipients": {
+      "type": "number",
+      "default": 500,
+      "label": "Max Campaign Recipients",
+      "description": "Maximum recipients accepted for one marketing send request"
+    },
+    "delay_ms": {
+      "type": "number",
+      "default": 200,
+      "label": "Delay Milliseconds",
+      "description": "Delay between recipients to reduce burst pressure"
+    },
+    "timeout": {
+      "type": "number",
+      "default": 30,
+      "label": "Timeout Seconds",
+      "description": "HTTP timeout for Stalwart API requests"
+    },
+    "queue_retry_enabled": {
+      "type": "boolean",
+      "default": true,
+      "label": "Retry Scheduler",
+      "description": "Reserved switch for future queued campaign retries"
+    }
+  }
+}

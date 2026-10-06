@@ -1,0 +1,264 @@
+@font-face {
+  font-family: 'CalSans';
+  src: url('./assets/fonts/CalSans-SemiBold.woff2') format('woff2');
+  font-display: swap;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 设计令牌与 www.supaboard.cc 落地页保持一致 */
+@layer base {
+  :root {
+    --background: 48 100% 98%;
+    --foreground: 215 25% 17%;
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 17%;
+    --primary: 263 90% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 81% 70%;
+    --secondary-foreground: 0 0% 100%;
+    --tertiary: 199 89% 48%;
+    --tertiary-foreground: 215 25% 17%;
+    --quaternary: 158 64% 52%;
+    --quaternary-foreground: 215 25% 17%;
+    --warning: 38 92% 55%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 263 90% 66%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 0 0% 100%;
+    --ring: 263 90% 66%;
+    --radius: 1rem;
+    --ink: #1e293b;
+    --shadow-pop: 4px 4px 0px 0px #1e293b;
+    --shadow-pop-hover: 6px 6px 0px 0px #1e293b;
+    --shadow-pop-active: 2px 2px 0px 0px #1e293b;
+    --shadow-pop-lg: 8px 8px 0px 0px #1e293b;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    --card: 222 40% 15%;
+    --card-foreground: 210 40% 98%;
+    --primary: 263 90% 66%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 330 81% 70%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 263 90% 66%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 22%;
+    --input: 222 40% 13%;
+    --ring: 263 90% 66%;
+    --ink: #000;
+    --shadow-pop: 4px 4px 0px 0px #000;
+    --shadow-pop-hover: 6px 6px 0px 0px #000;
+    --shadow-pop-active: 2px 2px 0px 0px #000;
+    --shadow-pop-lg: 8px 8px 0px 0px #000;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3 {
+    font-family: theme('fontFamily.heading');
+    @apply tracking-tight;
+  }
+}
+
+@layer components {
+  /* 卡片：粗描边 + 硬阴影（neo-brutalism） */
+  .sb-card {
+    @apply rounded-2xl border-2 bg-card text-card-foreground shadow-pop;
+    border-color: var(--ink);
+  }
+  .dark .sb-card {
+    border-color: hsl(var(--border));
+  }
+
+  .sb-btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-full border-2 px-5 py-2 text-sm font-semibold transition-all duration-150 disabled:pointer-events-none disabled:opacity-50;
+    border-color: var(--ink);
+  }
+  .sb-btn-pop {
+    @apply shadow-pop hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-pop-hover active:translate-x-0.5 active:translate-y-0.5 active:shadow-pop-active;
+  }
+  .sb-btn-primary {
+    @apply sb-btn sb-btn-pop bg-primary text-primary-foreground;
+  }
+  .sb-btn-secondary {
+    @apply sb-btn sb-btn-pop bg-secondary text-secondary-foreground;
+  }
+  .sb-btn-dark {
+    @apply sb-btn sb-btn-pop text-white;
+    background: var(--ink);
+  }
+  .dark .sb-btn-dark {
+    @apply bg-foreground text-background;
+  }
+  .sb-btn-outline {
+    @apply sb-btn bg-card text-foreground hover:bg-muted;
+  }
+  .sb-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground disabled:opacity-50;
+  }
+  .sb-btn-danger {
+    @apply sb-btn sb-btn-pop bg-destructive text-destructive-foreground;
+  }
+  .sb-btn-sm {
+    @apply px-3.5 py-1.5 text-xs;
+  }
+  .sb-btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+
+  .sb-input {
+    @apply w-full rounded-xl border-2 bg-input px-4 py-2.5 text-sm text-foreground outline-none transition placeholder:text-muted-foreground focus:border-primary focus:ring-4 focus:ring-primary/20 disabled:opacity-60;
+  }
+  .sb-label {
+    @apply mb-1.5 block text-sm font-semibold;
+  }
+
+  .sb-badge {
+    @apply inline-flex items-center gap-1 rounded-full border-2 px-2.5 py-0.5 text-xs font-semibold;
+    border-color: var(--ink);
+  }
+  .dark .sb-badge {
+    border-color: hsl(var(--border));
+  }
+
+  .sb-icon-tile {
+    @apply flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 text-white;
+    border-color: var(--ink);
+  }
+
+  .sb-title-underline {
+    @apply relative inline-block;
+  }
+  .sb-title-underline::after {
+    content: '';
+    @apply absolute -bottom-2 left-0 h-1.5 w-12 rounded-full bg-primary;
+  }
+
+  .sb-table {
+    @apply w-full text-left text-sm;
+  }
+  .sb-table th {
+    @apply whitespace-nowrap border-b-2 px-4 py-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground;
+  }
+  .sb-table td {
+    @apply border-b px-4 py-3 align-middle;
+  }
+  .sb-table tr:last-child td {
+    @apply border-b-0;
+  }
+}
+
+/* 知识库 / 公告富文本 */
+.sb-prose {
+  @apply text-sm leading-7;
+}
+.sb-prose h1 { @apply mb-3 mt-6 text-2xl; }
+.sb-prose h2 { @apply mb-3 mt-6 text-xl; }
+.sb-prose h3 { @apply mb-2 mt-5 text-lg; }
+.sb-prose p { @apply my-3; }
+.sb-prose a { @apply font-medium text-primary underline underline-offset-4; }
+.sb-prose ul { @apply my-3 list-disc pl-6; }
+.sb-prose ol { @apply my-3 list-decimal pl-6; }
+.sb-prose li { @apply my-1; }
+.sb-prose img { @apply my-4 max-w-full rounded-xl border-2; }
+.sb-prose code { @apply rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.85em]; }
+.sb-prose pre { @apply my-4 overflow-x-auto rounded-xl bg-muted p-4; }
+.sb-prose pre code { @apply bg-transparent p-0; }
+.sb-prose blockquote { @apply my-4 border-l-4 border-primary pl-4 text-muted-foreground; }
+.sb-prose table { @apply my-4 w-full border-collapse text-sm; }
+.sb-prose th, .sb-prose td { @apply border px-3 py-2; }
+.sb-prose hr { @apply my-6; }
+.sb-prose .v2board-no-access {
+  @apply my-4 rounded-xl border-2 border-dashed border-warning bg-warning/10 p-4 text-center font-semibold;
+}
+
+.sb-fade-enter-active,
+.sb-fade-leave-active {
+  transition: opacity 0.08s cubic-bezier(0.2, 0, 0, 1), transform 0.08s cubic-bezier(0.2, 0, 0, 1);
+  will-change: opacity, transform;
+}
+.sb-fade-enter-from {
+  opacity: 0;
+  transform: translateY(2px);
+}
+.sb-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-2px);
+}
+
+.sb-dots,
+.dot-grid {
+  background-image: radial-gradient(hsl(var(--foreground) / 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  contain: paint;
+}
+
+.blob-radius {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.sticker-card {
+  @apply rounded-2xl border-2 bg-card p-6 sm:p-8 text-card-foreground;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+  border-color: var(--ink);
+  box-shadow: var(--shadow-pop);
+}
+.dark .sticker-card {
+  border-color: hsl(var(--border));
+}
+.sticker-card:hover {
+  box-shadow: var(--shadow-pop-hover);
+}
+
+.candy-button {
+  @apply inline-flex select-none items-center justify-center gap-2 rounded-full border-2 bg-primary px-8 py-3.5 font-heading text-base font-bold text-primary-foreground;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  border-color: var(--ink);
+  box-shadow: var(--shadow-pop);
+}
+.dark .candy-button {
+  border-color: hsl(var(--border));
+}
+.candy-button:hover {
+  @apply -translate-x-0.5 -translate-y-0.5;
+  box-shadow: var(--shadow-pop-hover);
+}
+.candy-button:active {
+  @apply translate-x-0.5 translate-y-0.5;
+  box-shadow: var(--shadow-pop-active);
+}
+
+@keyframes pulse-slow {
+  0%, 100% { transform: scale(1) translateZ(0); }
+  50% { transform: scale(1.15) translateZ(0); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 8s ease-in-out infinite;
+  will-change: transform;
+}
+

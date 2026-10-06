@@ -1,0 +1,77 @@
+---
+title: "2026最新Clash使用教程详解：从订阅转换到进阶规则配置全攻略"
+description: "正在寻找2026年最新Clash使用教程？本文为您详细解析Clash Verge Rev的安装、订阅转换、规则配置及增强模式使用，助您轻松驾驭全平台科学上网。"
+date: 2026-05-03
+image: /blog/clash_usage_tutorial_cover.png
+authors:
+  - buoooou
+---
+
+在科学上网的工具箱中，Clash 凭借其强大的规则分流功能和多协议支持（包括最新 VLESS/Reality 协议），已经成为 2026 年最主流的选择。无论您是追求极致性能的专业玩家，还是刚入门的新手，一份详尽的 **Clash使用教程** 都是必不可少的。本文将带您从零开始，掌握 Windows、macOS 等全平台的 Clash 配置技巧。
+
+## Clash 客户端下载与系统适配
+
+由于原 Clash 内核已停止维护，传统的 Clash for Windows (CFW) 和 ClashX 已不支持新一代的 VLESS + Reality 协议。针对目前主流的智能分流需求，我们推荐以下现代化客户端：
+- **Windows**: Clash Verge Rev —— 界面现代，内置 Meta 内核，完美支持 VLESS/Reality。
+- **macOS**: Clash Verge Rev (Mac版) —— 跨平台神作，完美替代 ClashX。
+- **Android**: Clash Meta for Android (CMFA) —— 移动端首选，原生支持新协议。
+- **iOS**: 需要配合 [小火箭共享账号](/blog/shadowrocket-shared-apple-id-guide) 下载 Shadowrocket，或使用 Stash（Clash iOS 版）。
+
+如果您手头只有 V2Ray 链接，可以使用“机场转换链接”工具将其转换为 Clash/Clash Meta 订阅地址，以便统一管理。
+
+## Clash Verge Rev (Windows) 入门教程
+
+对于广大 Windows 用户，**Clash使用教程** 的第一步通常是从 Clash Verge Rev 开始的。
+
+### 第1步：导入节点信息
+1. 复制机场提供的 **Clash Meta 订阅链接**。
+2. 打开 Clash Verge Rev，点击左侧菜单栏的 **「订阅」**（Profiles）。
+3. 在顶部输入框粘贴订阅地址，点击 **「导入」**（Import）按钮。
+4. 导入成功后，右键点击该配置文件并选择 **「使用」**（Use）来激活它。
+
+### 第2步：开启系统代理
+点击左侧菜单的 **「设置」**（Settings），开启 **「系统代理」**（System Proxy）开关。
+
+### 第3步：选择节点
+在左侧菜单点击 **「代理」**（Proxies），可以看到所有的节点分组。在对应的策略组（通常为 Global 或 Proxy）中，选择一个低延迟节点即可开始使用。
+
+---
+
+## Clash Verge Rev (macOS) 使用指南
+
+macOS 平台同样强烈推荐使用 Clash Verge Rev。其操作逻辑与 Windows 版本完全一致：
+1. **导入配置**：点击左侧的 **「订阅」** 菜单，在顶部粘贴你的订阅链接并点击 **「导入」**，右键点击激活。
+2. **系统代理**：在左侧 **「设置」** 菜单中打开 **「系统代理」** 开关。首次开启时可能需要输入电脑开机密码授权。
+3. **模式选择**：在左侧 **「代理」** 菜单中选择适合的节点。出站模式建议选择 **「规则 (Rule)」**，即可实现国内直连、国外代理的智能分流。
+
+对于有更高需求的用户，可以在设置中开启 **「TUN 模式」**，该模式下可以接管终端及所有非系统代理软件的流量。
+
+---
+
+## 进阶技巧：自定义 Clash 规则配置
+
+Clash 的核心灵魂在于规则。通过合理的 **Clash使用教程** 进阶学习，您可以实现更精细的流量控制。
+
+### 常用规则匹配类型
+-   **DOMAIN-SUFFIX**: 匹配域名后缀（如 `google.com` 及其子域名）。
+-   **KEYWORD**: 匹配域名中的关键字（如 `youtube`）。
+-   **IP-CIDR**: 匹配特定 IP 段。
+
+### 策略组 (Policy Groups) 详解
+您可以创建不同的策略组来优化连接体验：
+-   **url-test (自动选择)**：系统会定期向指定 URL 发送请求，自动切换到延迟最低的节点。
+-   **select (手动选择)**：用户可以根据需要手动切换节点或策略组。
+
+在配置自定义规则时，建议参考 [如何选择稳定机场](/blog/how-to-choose-stable-airport-guide) 以获取高质量的节点支持，确保分流后的体验依然丝滑。
+
+---
+
+## 总结与避坑建议
+
+在使用 Clash 时，了解 [机场是什么](/blog/what-is-airport-proxy-vs-vpn) 以及如何获取高质量线路是成功的关键。由于现代机场越来越多采用 VLESS + Reality 协议，传统的老客户端已不适用。使用 Clash Verge Rev 或 Clash Meta for Android 能极大减少因协议不支持导致的连接失败问题。
+
+如果您正在寻找一个稳定、快速且无需复杂配置的机场，**Supaboard** 是您的理想选择。我们提供预置好的专线配置，完美适配上述所有新版 Clash 客户端。
+
+[立即注册并订阅 Supaboard](https://cdn.supaboard.cc/#/register?code=xT9EdJGD)
+
+想要了解更多关于网络优化的干货？欢迎查阅我们的 [使用教程](/docs) 或加入社群讨论。

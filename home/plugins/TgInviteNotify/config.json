@@ -1,0 +1,24 @@
+{
+  "name": "Telegram Invite Notify",
+  "code": "tg_invite_notify",
+  "version": "1.0.0",
+  "description": "Send a Telegram message to the admin when any new user registers. Shows inviter info if applicable.",
+  "author": "Antigravity",
+  "require": {
+    "xboard": ">=1.0.0"
+  },
+  "config": {
+    "tg_bot_token": {
+      "type": "string",
+      "default": "",
+      "label": "Telegram Bot Token",
+      "description": "The bot token obtained from @BotFather."
+    },
+    "tg_chat_id": {
+      "type": "string",
+      "default": "",
+      "label": "Admin Chat ID",
+      "description": "The Telegram Chat ID or Group ID to send notifications to."
+    }
+  }
+}

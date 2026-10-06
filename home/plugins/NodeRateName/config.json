@@ -1,0 +1,10 @@
+{
+    "name": "节点名称显示倍率",
+    "code": "node_rate_name",
+    "version": "1.0.1",
+    "description": "自动在客户端订阅节点名称最前面添加节点倍率标签，如 [1.5x] 香港 01",
+    "author": "Custom",
+    "require": {
+        "xboard": ">=1.0.0"
+    }
+}
