@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import Icon from './Icon.vue'
-import { renderMarkdown } from '@/utils/markdown'
 
 /** 套餐描述：兼容 JSON 特性列表 [{feature, support}] 与 Markdown/HTML 两种写法 */
 const props = defineProps<{ content: string | null | undefined }>()
@@ -16,6 +15,24 @@ const features = computed<{ feature: string; support: boolean }[] | null>(() => 
     return null
   }
 })
+
+const renderedHtml = ref('')
+
+watchEffect(async () => {
+  if (features.value) return
+  const raw = props.content || ''
+  if (!raw) {
+    renderedHtml.value = ''
+    return
+  }
+  // 纯文本或简单 HTML 无需加载 105KB 的 markdown-it
+  if (!raw.includes('#') && !raw.includes('*') && !raw.includes('`') && !raw.includes('---')) {
+    renderedHtml.value = raw
+    return
+  }
+  const { renderMarkdown } = await import('@/utils/markdown')
+  renderedHtml.value = renderMarkdown(raw)
+})
 </script>
 
 <template>
@@ -25,5 +42,5 @@ const features = computed<{ feature: string; support: boolean }[] | null>(() => 
       {{ f.feature }}
     </li>
   </ul>
-  <div v-else class="sb-prose" v-html="renderMarkdown(content)" />
+  <div v-else class="sb-prose" v-html="renderedHtml" />
 </template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import Modal from './Modal.vue'
 import Icon from './Icon.vue'
-import QrCode from './QrCode.vue'
+const QrCode = defineAsyncComponent(() => import('./QrCode.vue'))
 import { appTitle, settings } from '@/stores/app'
 import { copyText, detectPlatform } from '@/utils/format'
 import { toast } from '@/utils/feedback'

@@ -254,11 +254,25 @@
 }
 
 @keyframes pulse-slow {
-  0%, 100% { transform: scale(1) translateZ(0); }
-  50% { transform: scale(1.15) translateZ(0); }
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1) translateZ(0);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(1.05) translateZ(0);
+  }
 }
 .animate-pulse-slow {
   animation: pulse-slow 8s ease-in-out infinite;
-  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
+
+/* 提高长页面首屏与滚动性能：跳过视口外离屏 DOM 的初次计算与绘制 */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
 

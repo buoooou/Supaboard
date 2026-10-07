@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Icon from '@/components/Icon.vue'
-import { getBlogPostBySlug, getRelatedPosts, resolveAvatarUrl } from '@/utils/content'
-import { renderMarkdown } from '@/utils/markdown'
+import { getBlogPostBySlug, getRelatedPosts, loadBlogPostBody } from '@/utils/blog'
+import { registerMarkdownImageResolver, renderMarkdown } from '@/utils/markdown'
+import { resolveBlogImageUrl, resolveAvatarUrl } from '@/utils/assets'
 import { t } from '@/i18n'
+
+registerMarkdownImageResolver(resolveBlogImageUrl)
 
 const route = useRoute()
 const router = useRouter()
@@ -12,7 +15,20 @@ const router = useRouter()
 const slug = computed(() => String(route.params.slug || ''))
 const post = computed(() => getBlogPostBySlug(slug.value))
 const relatedPosts = computed(() => (post.value ? getRelatedPosts(post.value, 3) : []))
-const renderedContent = computed(() => renderMarkdown(post.value?.body || ''))
+
+const renderedContent = ref('')
+const loadingBody = ref(true)
+
+watchEffect(async () => {
+  if (!slug.value) return
+  loadingBody.value = true
+  try {
+    const rawBody = await loadBlogPostBody(slug.value)
+    renderedContent.value = renderMarkdown(rawBody)
+  } finally {
+    loadingBody.value = false
+  }
+})
 </script>
 
 <template>

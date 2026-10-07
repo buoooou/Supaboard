@@ -1,9 +1,7 @@
 import { ref } from 'vue'
-import enUS from './en-US'
-import zhTW from './zh-TW'
 
 /**
- * 轻量 i18n：文案直接以简体中文为 key，zh-CN 原样返回，其它语言查字典，缺失时回退到中文。
+ * 轻量 i18n：文案直接以简体中文为 key，zh-CN 原样快速返回，其它语言按需异步加载字典。
  * 用法：t('剩余 {n} 天', { n: 3 })
  */
 export const LANGS = [
@@ -12,9 +10,24 @@ export const LANGS = [
   { code: 'en-US', label: 'English' },
 ] as const
 
-const dictionaries: Record<string, Record<string, string>> = {
-  'en-US': enUS,
-  'zh-TW': zhTW,
+const dictionaries: Record<string, Record<string, string>> = {}
+
+const loaders: Record<string, () => Promise<{ default: Record<string, string> }>> = {
+  'en-US': () => import('./en-US'),
+  'zh-TW': () => import('./zh-TW'),
+}
+
+export async function loadLang(code: string): Promise<void> {
+  if (code === 'zh-CN' || dictionaries[code]) return
+  const loader = loaders[code]
+  if (loader) {
+    try {
+      const mod = await loader()
+      dictionaries[code] = mod.default
+    } catch {
+      /* ignore */
+    }
+  }
 }
 
 const LANG_KEY = 'SUPABOARD_LANG'
@@ -26,19 +39,34 @@ function detect(): string {
   } catch {
     /* ignore */
   }
-  const nav = (navigator.language || 'zh-CN').toLowerCase()
+  const nav = (typeof navigator !== 'undefined' ? navigator.language || 'zh-CN' : 'zh-CN').toLowerCase()
   if (nav.startsWith('zh')) {
     return nav.includes('tw') || nav.includes('hk') || nav.includes('hant') ? 'zh-TW' : 'zh-CN'
   }
   return nav.startsWith('en') ? 'en-US' : 'zh-CN'
 }
 
-export const currentLang = ref(detect())
-document.documentElement.lang = currentLang.value
+const initialLang = detect()
+export const currentLang = ref(initialLang)
+if (typeof document !== 'undefined') {
+  document.documentElement.lang = currentLang.value
+}
 
-export function setLang(code: string) {
+if (initialLang !== 'zh-CN') {
+  loadLang(initialLang).then(() => {
+    // 强制触发一次依赖当前语言的视图更新
+    currentLang.value = initialLang
+  })
+}
+
+export async function setLang(code: string): Promise<void> {
+  if (code !== 'zh-CN' && !dictionaries[code]) {
+    await loadLang(code)
+  }
   currentLang.value = code
-  document.documentElement.lang = code
+  if (typeof document !== 'undefined') {
+    document.documentElement.lang = code
+  }
   try {
     localStorage.setItem(LANG_KEY, code)
   } catch {
@@ -47,6 +75,16 @@ export function setLang(code: string) {
 }
 
 export function t(key: string, params?: Record<string, string | number>): string {
+  // 简体中文直通分支，零字典开销与极致渲染性能
+  if (currentLang.value === 'zh-CN') {
+    if (!params) return key
+    let text = key
+    for (const [k, v] of Object.entries(params)) {
+      text = text.split(`{${k}}`).join(String(v))
+    }
+    return text
+  }
+
   const dict = dictionaries[currentLang.value]
   let text = (dict && dict[key]) || key
   if (params) {

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Icon from '@/components/Icon.vue'
 import Spinner from '@/components/Spinner.vue'
 import Empty from '@/components/Empty.vue'
 import Modal from '@/components/Modal.vue'
-import QrCode from '@/components/QrCode.vue'
+const QrCode = defineAsyncComponent(() => import('@/components/QrCode.vue'))
 import { userApi, type Order, type PaymentMethod } from '@/api'
 import { currencySymbol, loadSubscribe, loadUser, loadUserConfig } from '@/stores/app'
 import { copyText, formatDate, money, periodLabel } from '@/utils/format'

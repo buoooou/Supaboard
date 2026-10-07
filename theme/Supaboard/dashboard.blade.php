@@ -1,6 +1,6 @@
 @php
   // 自愈：镜像更新后 public/theme/{theme} 仍是旧副本时，自动从主题目录重新同步一次
-  $__entry = public_path('theme/' . $theme . '/assets/main-D4qIvuzJ.js');
+  $__entry = public_path('theme/' . $theme . '/assets/main-CKEqY46W.js');
   if (!file_exists($__entry)) {
       try {
           $__src = app(\App\Services\ThemeService::class)->getThemePath($theme);
@@ -36,6 +36,10 @@
   @if (!empty($logo))
   <link rel="icon" href="{{ $logo }}" />
   @endif
+  <link rel="modulepreload" href="/theme/{{$theme}}/assets/main-CKEqY46W.js" />
+  <link rel="modulepreload" href="/theme/{{$theme}}/assets/vendor-vue-DTS2CXWn.js" />
+  <link rel="preload" href="/theme/{{$theme}}/assets/CalSans-SemiBold-uYvlD9JW.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="/theme/{{$theme}}/assets/main-udEiYH0V.css" />
   <script>
     window.routerBase = "/";
     window.settings = {!! json_encode($__settings, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!};
@@ -48,11 +52,43 @@
       } catch (e) {}
     })();
   </script>
-  <script type="module" crossorigin src="/theme/{{$theme}}/assets/main-D4qIvuzJ.js"></script>
-  <link rel="stylesheet" href="/theme/{{$theme}}/assets/main-DcUIbBtz.css" />
+  <script type="module" crossorigin src="/theme/{{$theme}}/assets/main-CKEqY46W.js"></script>
+
+  <!-- Google Analytics (GA4: G-C156V21PNC) - lazyOnload -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-C156V21PNC', {
+      page_path: window.location.pathname,
+    });
+    (function () {
+      function loadGA() {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-C156V21PNC';
+        document.head.appendChild(s);
+      }
+      if (document.readyState === 'complete') {
+        loadGA();
+      } else {
+        window.addEventListener('load', loadGA, { once: true });
+      }
+    })();
+  </script>
 </head>
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <style>
+      .sb-init-loader{display:flex;align-items:center;justify-content:center;min-height:100vh;background-color:#fffdfa;transition:background-color .2s}
+      .dark .sb-init-loader{background-color:#0f172a}
+      .sb-init-spinner{width:36px;height:36px;border:3px solid rgba(111,60,255,.15);border-top-color:#6f3cff;border-radius:50%;animation:sb-spin .7s linear infinite}
+      @keyframes sb-spin{to{transform:rotate(360deg)}}
+    </style>
+    <div class="sb-init-loader">
+      <div class="sb-init-spinner"></div>
+    </div>
+  </div>
   {!! $theme_config['custom_html'] ?? '' !!}
 </body>
 </html>

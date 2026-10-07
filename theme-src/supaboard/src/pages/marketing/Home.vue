@@ -271,7 +271,7 @@ const faqs = [
     </section>
 
     <!-- 3. SECURITY 安全与无日志策略 -->
-    <section class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8">
+    <section class="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 md:py-28 lg:px-8 cv-auto">
       <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <div>
           <h2 class="mb-8 font-heading text-4xl font-black tracking-tight leading-tight sm:text-5xl md:text-6xl">
@@ -327,7 +327,7 @@ const faqs = [
     </section>
 
     <!-- 4. QUICK START 快速上手教程 -->
-    <section class="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div class="sticker-card border-dashed bg-secondary/10">
         <div class="mb-12 text-center">
           <h2 class="font-heading text-3xl font-black uppercase sm:text-4xl">
@@ -486,7 +486,7 @@ const faqs = [
     </section>
 
     <!-- 6. REFERRAL 合伙人推广返佣卡片 -->
-    <section class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div class="sticker-card border-dashed bg-primary/5 p-8 sm:p-12 md:p-16 flex flex-col md:flex-row items-center gap-10">
         <div class="flex-1 text-center md:text-left">
           <div
@@ -526,7 +526,7 @@ const faqs = [
     </section>
 
     <!-- 7. TG ROBOT 电报机器人服务 -->
-    <section class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div
         class="sticker-card relative flex flex-col items-center gap-10 overflow-hidden bg-foreground p-8 text-white sm:p-12 md:p-16 lg:flex-row"
       >
@@ -579,7 +579,7 @@ const faqs = [
     </section>
 
     <!-- 8. IP CHECK 在线诊断工具 -->
-    <section class="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div class="sticker-card flex flex-col items-center gap-10 lg:flex-row">
         <div class="flex-1 text-center lg:text-left">
           <div
@@ -632,7 +632,7 @@ const faqs = [
     </section>
 
     <!-- 9. FAQ 常见问题 -->
-    <section class="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <section class="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div class="mb-12 text-center">
         <h2 class="font-heading text-3xl font-black uppercase sm:text-4xl">
           ❓ {{ t('常见问题 FAQ') }}

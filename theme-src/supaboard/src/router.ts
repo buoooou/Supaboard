@@ -98,4 +98,12 @@ router.beforeEach((to) => {
 router.afterEach((to) => {
   const title = to.meta.title as string | undefined
   document.title = title ? `${t(title)} - ${appTitle}` : appTitle
+
+  // SPA 路由切换时向 Google Analytics 同步上报页面浏览 (GA4: G-C156V21PNC)
+  if (typeof (window as any).gtag === 'function') {
+    ;(window as any).gtag('config', 'G-C156V21PNC', {
+      page_path: window.location.pathname + window.location.search + window.location.hash,
+      page_title: document.title,
+    })
+  }
 })

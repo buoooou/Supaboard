@@ -1,20 +1,20 @@
 <script setup lang="ts">
-import { computed, onActivated, onMounted, ref } from 'vue'
+import { computed, defineAsyncComponent, onActivated, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import Icon from '@/components/Icon.vue'
-import Modal from '@/components/Modal.vue'
 import Spinner from '@/components/Spinner.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
-import SubscribeModal from '@/components/SubscribeModal.vue'
 import { userApi, type Notice } from '@/api'
 import { currencySymbol, loadSubscribe, loadUserConfig, state } from '@/stores/app'
 import { daysLeft, formatBytes, formatDate, money } from '@/utils/format'
-import { renderMarkdown } from '@/utils/markdown'
 import { showError } from '@/utils/feedback'
 import { t } from '@/i18n'
 
+const SubscribeModal = defineAsyncComponent(() => import('@/components/SubscribeModal.vue'))
+const NoticeModal = defineAsyncComponent(() => import('@/components/NoticeModal.vue'))
+
 const router = useRouter()
-const loading = ref(true)
+const loading = ref(!state.subscribe && !state.user)
 const notices = ref<Notice[]>([])
 const stat = ref<[number, number, number]>([0, 0, 0])
 const activeNotice = ref<Notice | null>(null)
@@ -120,16 +120,16 @@ const actions = computed(() => [
     <!-- 公告 -->
     <section v-if="notices.length" class="sb-card relative overflow-hidden">
       <div
-        class="relative min-h-[150px] cursor-pointer bg-cover bg-center p-6 sm:p-8"
+        class="relative flex flex-col justify-center min-h-[220px] sm:min-h-[250px] cursor-pointer bg-cover bg-center p-6 sm:p-10"
         :style="notices[noticeIndex].img_url ? { backgroundImage: `url(${notices[noticeIndex].img_url})` } : {}"
         :class="notices[noticeIndex].img_url ? 'text-white' : 'bg-gradient-to-br from-primary/15 via-card to-secondary/15'"
         @click="activeNotice = notices[noticeIndex]"
       >
-        <div v-if="notices[noticeIndex].img_url" class="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/20" />
-        <div class="relative">
-          <span class="sb-badge bg-card text-foreground"><Icon name="bell" :size="12" />{{ t('公告') }}</span>
-          <h2 class="mt-3 text-xl sm:text-2xl">{{ notices[noticeIndex].title }}</h2>
-          <p class="mt-2 text-sm opacity-80">{{ formatDate(notices[noticeIndex].created_at) }} · {{ t('点击查看详情') }}</p>
+        <div v-if="notices[noticeIndex].img_url" class="absolute inset-0 bg-gradient-to-r from-slate-900/85 via-slate-900/50 to-transparent" />
+        <div class="relative max-w-2xl">
+          <span class="sb-badge bg-card text-foreground shadow-[1px_1px_0px_0px_var(--ink)]"><Icon name="bell" :size="12" />{{ t('公告') }}</span>
+          <h2 class="mt-3 font-heading text-xl font-black tracking-tight sm:text-2xl md:text-3xl">{{ notices[noticeIndex].title }}</h2>
+          <p class="mt-2.5 text-sm font-medium opacity-90">{{ formatDate(notices[noticeIndex].created_at) }} · {{ t('点击查看详情') }}</p>
         </div>
       </div>
       <div v-if="notices.length > 1" class="absolute bottom-4 right-4 flex gap-1.5">
@@ -255,9 +255,6 @@ const actions = computed(() => [
 
     <SubscribeModal :open="showSubscribe" :url="sub?.subscribe_url || ''" @close="showSubscribe = false" />
 
-    <Modal :open="!!activeNotice" :title="activeNotice?.title" width="max-w-2xl" @close="activeNotice = null">
-      <img v-if="activeNotice?.img_url" :src="activeNotice.img_url" alt="" class="mb-4 w-full rounded-xl border-2" />
-      <div class="sb-prose" v-html="renderMarkdown(activeNotice?.content)" />
-    </Modal>
+    <NoticeModal :notice="activeNotice" @close="activeNotice = null" />
   </div>
 </template>

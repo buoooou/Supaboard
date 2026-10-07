@@ -1,5 +1,11 @@
 import MarkdownIt from 'markdown-it'
-import { resolveBlogImageUrl } from './content'
+
+type ImageResolver = (src: string) => string
+let customImageResolver: ImageResolver | null = null
+
+export function registerMarkdownImageResolver(resolver: ImageResolver) {
+  customImageResolver = resolver
+}
 
 const md = new MarkdownIt({ html: true, linkify: true, breaks: true })
 
@@ -7,7 +13,7 @@ const defaultLinkOpen =
   md.renderer.rules.link_open || ((tokens, idx, options, _env, self) => self.renderToken(tokens, idx, options))
 
 md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
-  let href = tokens[idx].attrGet('href') || ''
+  const href = tokens[idx].attrGet('href') || ''
   if (/^https?:/i.test(href)) {
     tokens[idx].attrSet('target', '_blank')
     tokens[idx].attrSet('rel', 'noopener')
@@ -23,8 +29,9 @@ const defaultImage =
 
 md.renderer.rules.image = (tokens, idx, options, env, self) => {
   const src = tokens[idx].attrGet('src') || ''
-  if (src.startsWith('/blog/') || src.startsWith('blog/')) {
-    tokens[idx].attrSet('src', resolveBlogImageUrl(src))
+  if (customImageResolver) {
+    const resolved = customImageResolver(src)
+    if (resolved) tokens[idx].attrSet('src', resolved)
   }
   return defaultImage(tokens, idx, options, env, self)
 }

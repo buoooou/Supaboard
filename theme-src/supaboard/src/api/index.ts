@@ -232,7 +232,7 @@ export interface TrafficLog {
 const data = <T>(p: Promise<Envelope<T>>) => p.then((r) => r.data)
 
 export const guestApi = {
-  config: () => data(http.get<Envelope<GuestConfig>>('/guest/comm/config')),
+  config: (force = false) => data(http.get<Envelope<GuestConfig>>('/guest/comm/config', undefined, { force })),
 }
 
 export const passportApi = {
@@ -246,10 +246,10 @@ export const passportApi = {
 }
 
 export const userApi = {
-  info: () => data(http.get<Envelope<UserInfo>>('/user/info')),
-  config: () => data(http.get<Envelope<UserConfig>>('/user/comm/config')),
-  getStat: () => data(http.get<Envelope<[number, number, number]>>('/user/getStat')),
-  getSubscribe: () => data(http.get<Envelope<Subscribe>>('/user/getSubscribe')),
+  info: (force = false) => data(http.get<Envelope<UserInfo>>('/user/info', undefined, { force })),
+  config: (force = false) => data(http.get<Envelope<UserConfig>>('/user/comm/config', undefined, { force })),
+  getStat: (force = false) => data(http.get<Envelope<[number, number, number]>>('/user/getStat', undefined, { force })),
+  getSubscribe: (force = false) => data(http.get<Envelope<Subscribe>>('/user/getSubscribe', undefined, { force })),
   resetSecurity: () => data(http.get<Envelope<string>>('/user/resetSecurity')),
   changePassword: (old_password: string, new_password: string) =>
     data(http.post<Envelope<boolean>>('/user/changePassword', { old_password, new_password })),
@@ -258,14 +258,14 @@ export const userApi = {
   transfer: (transfer_amount: number) => data(http.post<Envelope<boolean>>('/user/transfer', { transfer_amount })),
   telegramBotInfo: () => data(http.get<Envelope<{ username: string }>>('/user/telegram/getBotInfo')),
 
-  notices: (current = 1) => http.get<{ data: Notice[]; total: number }>('/user/notice/fetch', { current }),
+  notices: (current = 1, force = false) => http.get<{ data: Notice[]; total: number }>('/user/notice/fetch', { current }, { force }),
 
-  plans: () => data(http.get<Envelope<Plan[]>>('/user/plan/fetch')),
+  plans: (force = false) => data(http.get<Envelope<Plan[]>>('/user/plan/fetch', undefined, { force })),
   plan: (id: number | string) => data(http.get<Envelope<Plan>>('/user/plan/fetch', { id })),
   checkCoupon: (code: string, plan_id: number, period: string) =>
     data(http.post<Envelope<Coupon>>('/user/coupon/check', { code, plan_id, period })),
 
-  orders: () => data(http.get<Envelope<Order[]>>('/user/order/fetch')),
+  orders: (force = false) => data(http.get<Envelope<Order[]>>('/user/order/fetch', undefined, { force })),
   order: (trade_no: string) => data(http.get<Envelope<Order>>('/user/order/detail', { trade_no })),
   orderStatus: (trade_no: string) => data(http.get<Envelope<number>>('/user/order/check', { trade_no })),
   saveOrder: (plan_id: number, period: string, coupon_code?: string) =>
@@ -275,9 +275,9 @@ export const userApi = {
   paymentMethods: () => data(http.get<Envelope<PaymentMethod[]>>('/user/order/getPaymentMethod')),
   cancelOrder: (trade_no: string) => data(http.post<Envelope<boolean>>('/user/order/cancel', { trade_no })),
 
-  servers: () => http.get<{ data: ServerNode[] }>('/user/server/fetch').then((r) => r?.data ?? []),
+  servers: (force = false) => http.get<{ data: ServerNode[] }>('/user/server/fetch', undefined, { force }).then((r) => r?.data ?? []),
 
-  tickets: () => data(http.get<Envelope<Ticket[]>>('/user/ticket/fetch')),
+  tickets: (force = false) => data(http.get<Envelope<Ticket[]>>('/user/ticket/fetch', undefined, { force })),
   ticket: (id: number | string) => data(http.get<Envelope<Ticket>>('/user/ticket/fetch', { id })),
   saveTicket: (subject: string, level: number, message: string) =>
     data(http.post<Envelope<boolean>>('/user/ticket/save', { subject, level, message })),
@@ -287,15 +287,15 @@ export const userApi = {
   withdraw: (withdraw_method: string, withdraw_account: string) =>
     data(http.post<Envelope<boolean>>('/user/ticket/withdraw', { withdraw_method, withdraw_account })),
 
-  invite: () => data(http.get<Envelope<InviteData>>('/user/invite/fetch')),
+  invite: (force = false) => data(http.get<Envelope<InviteData>>('/user/invite/fetch', undefined, { force })),
   inviteSave: () => data(http.get<Envelope<boolean>>('/user/invite/save')),
   inviteDetails: (current: number, page_size: number) =>
     http.get<{ data: CommissionLog[]; total: number }>('/user/invite/details', { current, page_size }),
 
-  knowledge: (language: string, keyword?: string) =>
-    data(http.get<Envelope<Record<string, KnowledgeItem[]>>>('/user/knowledge/fetch', { language, keyword })),
+  knowledge: (language: string, keyword?: string, force = false) =>
+    data(http.get<Envelope<Record<string, KnowledgeItem[]>>>('/user/knowledge/fetch', { language, keyword }, { force })),
   knowledgeDetail: (id: number, language: string) =>
     data(http.get<Envelope<KnowledgeItem>>('/user/knowledge/fetch', { id, language })),
 
-  trafficLog: () => data(http.get<Envelope<TrafficLog[]>>('/user/stat/getTrafficLog')),
+  trafficLog: (force = false) => data(http.get<Envelope<TrafficLog[]>>('/user/stat/getTrafficLog', undefined, { force })),
 }

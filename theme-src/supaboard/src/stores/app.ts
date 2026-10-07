@@ -29,7 +29,7 @@ export const state = reactive<{
 let guestPromise: Promise<GuestConfig> | null = null
 export function loadGuestConfig(force = false) {
   if (!guestPromise || force) {
-    guestPromise = guestApi.config().then((c) => (state.guestConfig = c))
+    guestPromise = guestApi.config(force).then((c) => (state.guestConfig = c))
     guestPromise.catch(() => (guestPromise = null))
   }
   return guestPromise
@@ -38,7 +38,7 @@ export function loadGuestConfig(force = false) {
 let userConfigPromise: Promise<UserConfig> | null = null
 export function loadUserConfig(force = false) {
   if (!userConfigPromise || force) {
-    userConfigPromise = userApi.config().then((c) => (state.userConfig = c))
+    userConfigPromise = userApi.config(force).then((c) => (state.userConfig = c))
     userConfigPromise.catch(() => (userConfigPromise = null))
   }
   return userConfigPromise
@@ -47,7 +47,7 @@ export function loadUserConfig(force = false) {
 let userPromise: Promise<UserInfo> | null = null
 export function loadUser(force = false) {
   if (!userPromise || force) {
-    userPromise = userApi.info().then((u) => {
+    userPromise = userApi.info(force).then((u) => {
       state.user = u
       return u
     })
@@ -59,7 +59,7 @@ export function loadUser(force = false) {
 let subPromise: Promise<Subscribe> | null = null
 export function loadSubscribe(force = false) {
   if (!subPromise || force) {
-    subPromise = userApi.getSubscribe().then((s) => {
+    subPromise = userApi.getSubscribe(force).then((s) => {
       state.subscribe = s
       return s
     })
