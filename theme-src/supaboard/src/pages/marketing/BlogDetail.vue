@@ -79,7 +79,10 @@ watchEffect(async () => {
       </header>
 
       <!-- 文章渲染正文 -->
-      <div class="sb-prose max-w-none" v-html="renderedContent" />
+      <div v-if="loadingBody" class="py-12 flex items-center justify-center text-muted-foreground">
+        <Icon name="loader" :size="24" class="text-primary" />
+      </div>
+      <div v-else class="sb-prose max-w-none" v-html="renderedContent" />
 
       <!-- 文章底部行动呼吁 -->
       <div

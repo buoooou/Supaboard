@@ -253,8 +253,8 @@ const actions = computed(() => [
       </div>
     </section>
 
-    <SubscribeModal :open="showSubscribe" :url="sub?.subscribe_url || ''" @close="showSubscribe = false" />
+    <SubscribeModal v-if="showSubscribe" :open="showSubscribe" :url="sub?.subscribe_url || ''" @close="showSubscribe = false" />
 
-    <NoticeModal :notice="activeNotice" @close="activeNotice = null" />
+    <NoticeModal v-if="activeNotice" :notice="activeNotice" @close="activeNotice = null" />
   </div>
 </template>

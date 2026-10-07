@@ -26,7 +26,9 @@ watchEffect(async () => {
     return
   }
   // 纯文本或简单 HTML 无需加载 105KB 的 markdown-it
-  if (!raw.includes('#') && !raw.includes('*') && !raw.includes('`') && !raw.includes('---')) {
+  // 使用正则精准检测是否包含 Markdown 语法（标题、无序/有序列表、粗体斜体、行内代码、引用、分割线、链接）
+  const hasMarkdown = /^[ \t]*[-*+]\s|^[ \t]*\d+\.\s|^#{1,6}\s|[`*_~\[]|---/m.test(raw)
+  if (!hasMarkdown) {
     renderedHtml.value = raw
     return
   }

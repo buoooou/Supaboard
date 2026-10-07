@@ -94,7 +94,7 @@ const colors = ['bg-primary', 'bg-secondary', 'bg-tertiary', 'bg-quaternary']
       </section>
     </div>
 
-    <Modal :open="!!article" :title="article?.title" width="max-w-3xl" @close="article = null">
+    <Modal v-if="article" :open="!!article" :title="article?.title" width="max-w-3xl" @close="article = null">
       <Spinner v-if="articleLoading" />
       <div v-else class="sb-prose" v-html="renderMarkdown(article?.body)" />
     </Modal>

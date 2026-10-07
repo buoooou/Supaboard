@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, triggerRef } from 'vue'
 
 /**
  * 轻量 i18n：文案直接以简体中文为 key，zh-CN 原样快速返回，其它语言按需异步加载字典。
@@ -54,8 +54,8 @@ if (typeof document !== 'undefined') {
 
 if (initialLang !== 'zh-CN') {
   loadLang(initialLang).then(() => {
-    // 强制触发一次依赖当前语言的视图更新
-    currentLang.value = initialLang
+    // 字典加载完成后触发响应式更新，使已渲染的文本立即切换到对应语言
+    triggerRef(currentLang)
   })
 }
 

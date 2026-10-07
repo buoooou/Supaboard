@@ -94,7 +94,7 @@ async function close(tk: Ticket) {
       </div>
     </div>
 
-    <Modal :open="creating" :title="t('新建工单')" @close="creating = false">
+    <Modal v-if="creating" :open="creating" :title="t('新建工单')" @close="creating = false">
       <div class="space-y-4">
         <div>
           <label class="sb-label">{{ t('主题') }}</label>

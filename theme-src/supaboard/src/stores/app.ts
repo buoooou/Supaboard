@@ -1,5 +1,6 @@
 import { reactive, ref } from 'vue'
 import { guestApi, userApi, type GuestConfig, type Subscribe, type UserConfig, type UserInfo } from '@/api'
+import { clearApiCache } from '@/api/http'
 import { prefs } from '@/utils/storage'
 
 export const settings: SupaboardSettings = window.settings || {
@@ -26,55 +27,39 @@ export const state = reactive<{
   subscribe: null,
 })
 
-let guestPromise: Promise<GuestConfig> | null = null
 export function loadGuestConfig(force = false) {
-  if (!guestPromise || force) {
-    guestPromise = guestApi.config(force).then((c) => (state.guestConfig = c))
-    guestPromise.catch(() => (guestPromise = null))
-  }
-  return guestPromise
+  return guestApi.config(force).then((c) => {
+    state.guestConfig = c
+    return c
+  })
 }
 
-let userConfigPromise: Promise<UserConfig> | null = null
 export function loadUserConfig(force = false) {
-  if (!userConfigPromise || force) {
-    userConfigPromise = userApi.config(force).then((c) => (state.userConfig = c))
-    userConfigPromise.catch(() => (userConfigPromise = null))
-  }
-  return userConfigPromise
+  return userApi.config(force).then((c) => {
+    state.userConfig = c
+    return c
+  })
 }
 
-let userPromise: Promise<UserInfo> | null = null
 export function loadUser(force = false) {
-  if (!userPromise || force) {
-    userPromise = userApi.info(force).then((u) => {
-      state.user = u
-      return u
-    })
-    userPromise.catch(() => (userPromise = null))
-  }
-  return userPromise
+  return userApi.info(force).then((u) => {
+    state.user = u
+    return u
+  })
 }
 
-let subPromise: Promise<Subscribe> | null = null
 export function loadSubscribe(force = false) {
-  if (!subPromise || force) {
-    subPromise = userApi.getSubscribe(force).then((s) => {
-      state.subscribe = s
-      return s
-    })
-    subPromise.catch(() => (subPromise = null))
-  }
-  return subPromise
+  return userApi.getSubscribe(force).then((s) => {
+    state.subscribe = s
+    return s
+  })
 }
 
 export function resetUserState() {
   state.user = null
   state.subscribe = null
   state.userConfig = null
-  userConfigPromise = null
-  userPromise = null
-  subPromise = null
+  clearApiCache()
 }
 
 export function currencySymbol() {

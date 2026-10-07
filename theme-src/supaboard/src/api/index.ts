@@ -1,4 +1,4 @@
-import { http, type Envelope } from './http'
+import { http, clearApiCache, type Envelope } from './http'
 
 /* ---------- 类型（字段与后端 V1 接口一一对应） ---------- */
 
@@ -250,7 +250,11 @@ export const userApi = {
   config: (force = false) => data(http.get<Envelope<UserConfig>>('/user/comm/config', undefined, { force })),
   getStat: (force = false) => data(http.get<Envelope<[number, number, number]>>('/user/getStat', undefined, { force })),
   getSubscribe: (force = false) => data(http.get<Envelope<Subscribe>>('/user/getSubscribe', undefined, { force })),
-  resetSecurity: () => data(http.get<Envelope<string>>('/user/resetSecurity')),
+  resetSecurity: () =>
+    data(http.get<Envelope<string>>('/user/resetSecurity')).then((res) => {
+      clearApiCache('/user/getSubscribe')
+      return res
+    }),
   changePassword: (old_password: string, new_password: string) =>
     data(http.post<Envelope<boolean>>('/user/changePassword', { old_password, new_password })),
   update: (body: { remind_expire?: number; remind_traffic?: number }) =>

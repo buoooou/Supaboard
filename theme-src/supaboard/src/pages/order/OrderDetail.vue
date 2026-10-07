@@ -252,7 +252,7 @@ async function copyNo() {
       </aside>
     </div>
 
-    <Modal :open="!!qr" :title="t('扫码支付')" width="max-w-sm" @close="qr = ''">
+    <Modal v-if="qr" :open="!!qr" :title="t('扫码支付')" width="max-w-sm" @close="qr = ''">
       <div class="flex flex-col items-center gap-4 pb-2">
         <QrCode :value="qr" :size="220" />
         <div class="font-heading text-2xl">{{ currencySymbol() }}{{ money(payable) }}</div>

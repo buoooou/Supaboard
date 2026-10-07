@@ -1,6 +1,6 @@
 @php
   // 自愈：镜像更新后 public/theme/{theme} 仍是旧副本时，自动从主题目录重新同步一次
-  $__entry = public_path('theme/' . $theme . '/assets/main-CKEqY46W.js');
+  $__entry = public_path('theme/' . $theme . '/assets/main-CQNXVgBP.js');
   if (!file_exists($__entry)) {
       try {
           $__src = app(\App\Services\ThemeService::class)->getThemePath($theme);
@@ -36,8 +36,8 @@
   @if (!empty($logo))
   <link rel="icon" href="{{ $logo }}" />
   @endif
-  <link rel="modulepreload" href="/theme/{{$theme}}/assets/main-CKEqY46W.js" />
-  <link rel="modulepreload" href="/theme/{{$theme}}/assets/vendor-vue-DTS2CXWn.js" />
+  <link rel="modulepreload" href="/theme/{{$theme}}/assets/main-CQNXVgBP.js" />
+  <link rel="modulepreload" href="/theme/{{$theme}}/assets/vendor-vue-CGPJi0X8.js" />
   <link rel="preload" href="/theme/{{$theme}}/assets/CalSans-SemiBold-uYvlD9JW.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="/theme/{{$theme}}/assets/main-udEiYH0V.css" />
   <script>
@@ -52,7 +52,7 @@
       } catch (e) {}
     })();
   </script>
-  <script type="module" crossorigin src="/theme/{{$theme}}/assets/main-CKEqY46W.js"></script>
+  <script type="module" crossorigin src="/theme/{{$theme}}/assets/main-CQNXVgBP.js"></script>
 
   <!-- Google Analytics (GA4: G-C156V21PNC) - lazyOnload -->
   <script>
