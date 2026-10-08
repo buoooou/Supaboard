@@ -70,7 +70,13 @@ onMounted(async () => {
   }
 })
 
+// KeepAlive 首次挂载时也会触发 onActivated，此时 onMounted 已在请求，跳过
+let activatedOnce = false
 onActivated(() => {
+  if (!activatedOnce) {
+    activatedOnce = true
+    return
+  }
   // 从其他页面切回时静默更新订阅与统计，不闪烁也不重新显示 Spinner
   loadSubscribe(true).catch(() => {})
   userApi.getStat().then((s) => (stat.value = s)).catch(() => {})

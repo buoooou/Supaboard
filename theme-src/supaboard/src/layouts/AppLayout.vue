@@ -131,7 +131,7 @@ async function logout() {
 
     <!-- 顶栏 -->
     <header
-      class="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b-2 bg-background/90 px-4 backdrop-blur sm:px-6"
+      class="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b-2 bg-background px-4 sm:px-6"
       style="border-color: var(--ink)"
     >
       <div class="flex min-w-0 items-center gap-2">
@@ -191,7 +191,8 @@ async function logout() {
       <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
         <RouterView v-slot="{ Component }">
           <Transition name="sb-fade" mode="out-in">
-            <KeepAlive :max="8">
+            <!-- 详情页带轮询且依赖路由参数，缓存会导致离开后仍在轮询、或忽略新的 query -->
+            <KeepAlive :max="8" :exclude="['OrderDetail', 'TicketDetail', 'PlanDetail']">
               <component :is="Component" :key="route.path" />
             </KeepAlive>
           </Transition>

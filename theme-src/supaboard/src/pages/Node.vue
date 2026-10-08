@@ -66,10 +66,7 @@ const noPlan = computed(() => !state.subscribe?.plan_id)
               <div class="mt-1 text-xs uppercase text-muted-foreground">{{ n.type }}</div>
             </div>
             <span class="flex shrink-0 items-center gap-1.5 text-xs font-semibold" :class="n.is_online ? 'text-quaternary' : 'text-muted-foreground'">
-              <span class="relative flex h-2.5 w-2.5">
-                <span v-if="n.is_online" class="absolute inline-flex h-full w-full animate-ping rounded-full bg-quaternary opacity-60" />
-                <span class="relative inline-flex h-2.5 w-2.5 rounded-full" :class="n.is_online ? 'bg-quaternary' : 'bg-muted-foreground'" />
-              </span>
+              <span class="inline-flex h-2.5 w-2.5 rounded-full" :class="n.is_online ? 'bg-quaternary' : 'bg-muted-foreground'" />
               {{ n.is_online ? t('在线') : t('离线') }}
             </span>
           </div>

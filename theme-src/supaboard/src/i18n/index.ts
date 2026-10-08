@@ -1,4 +1,4 @@
-import { ref, triggerRef } from 'vue'
+import { ref } from 'vue'
 
 /**
  * 轻量 i18n：文案直接以简体中文为 key，zh-CN 原样快速返回，其它语言按需异步加载字典。
@@ -52,12 +52,8 @@ if (typeof document !== 'undefined') {
   document.documentElement.lang = currentLang.value
 }
 
-if (initialLang !== 'zh-CN') {
-  loadLang(initialLang).then(() => {
-    // 字典加载完成后触发响应式更新，使已渲染的文本立即切换到对应语言
-    triggerRef(currentLang)
-  })
-}
+/** 非简体中文首屏等字典就绪再挂载，避免先渲染中文再整页重渲染一次 */
+export const i18nReady: Promise<void> = loadLang(initialLang)
 
 export async function setLang(code: string): Promise<void> {
   if (code !== 'zh-CN' && !dictionaries[code]) {

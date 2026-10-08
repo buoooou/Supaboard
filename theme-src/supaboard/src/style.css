@@ -222,35 +222,38 @@
   border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
 }
 
-.sticker-card {
-  @apply rounded-2xl border-2 bg-card p-6 sm:p-8 text-card-foreground;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
-  border-color: var(--ink);
-  box-shadow: var(--shadow-pop);
-}
-.dark .sticker-card {
-  border-color: hsl(var(--border));
-}
-.sticker-card:hover {
-  box-shadow: var(--shadow-pop-hover);
-}
+/* 放在 components 层，才能被 bg-* / p-* / shadow-* 等工具类覆盖（与落地页 globals.css 一致） */
+@layer components {
+  .sticker-card {
+    @apply rounded-2xl border-2 bg-card p-6 sm:p-8 text-card-foreground;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+    border-color: var(--ink);
+    box-shadow: var(--shadow-pop);
+  }
+  .dark .sticker-card {
+    border-color: hsl(var(--border));
+  }
+  .sticker-card:hover {
+    box-shadow: var(--shadow-pop-hover);
+  }
 
-.candy-button {
-  @apply inline-flex select-none items-center justify-center gap-2 rounded-full border-2 bg-primary px-8 py-3.5 font-heading text-base font-bold text-primary-foreground;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-  border-color: var(--ink);
-  box-shadow: var(--shadow-pop);
-}
-.dark .candy-button {
-  border-color: hsl(var(--border));
-}
-.candy-button:hover {
-  @apply -translate-x-0.5 -translate-y-0.5;
-  box-shadow: var(--shadow-pop-hover);
-}
-.candy-button:active {
-  @apply translate-x-0.5 translate-y-0.5;
-  box-shadow: var(--shadow-pop-active);
+  .candy-button {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full border-2 bg-primary px-8 py-3.5 font-heading text-base font-bold text-primary-foreground;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    border-color: var(--ink);
+    box-shadow: var(--shadow-pop);
+  }
+  .dark .candy-button {
+    border-color: hsl(var(--border));
+  }
+  .candy-button:hover {
+    @apply -translate-x-0.5 -translate-y-0.5;
+    box-shadow: var(--shadow-pop-hover);
+  }
+  .candy-button:active {
+    @apply translate-x-0.5 translate-y-0.5;
+    box-shadow: var(--shadow-pop-active);
+  }
 }
 
 @keyframes pulse-slow {
@@ -267,6 +270,12 @@
   animation: pulse-slow 8s ease-in-out infinite;
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-pulse-slow,
+  .animate-pulse {
+    animation: none;
+  }
 }
 
 /* 提高长页面首屏与滚动性能：跳过视口外离屏 DOM 的初次计算与绘制 */

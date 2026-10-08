@@ -76,7 +76,7 @@ onMounted(() => {
   <div class="flex min-h-screen flex-col bg-background dot-grid">
     <!-- 顶部固定导航栏 -->
     <header
-      class="sticky top-0 z-40 w-full border-b-2 bg-background/95 backdrop-blur transition-colors"
+      class="sticky top-0 z-40 w-full border-b-2 bg-background transition-colors"
       style="border-color: var(--ink)"
     >
       <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
@@ -240,7 +240,8 @@ onMounted(() => {
     <main class="flex-1">
       <RouterView v-slot="{ Component }">
         <Transition name="sb-fade" mode="out-in">
-          <KeepAlive :max="6">
+          <!-- 文章 / 文档 / 条款按路径区分实例，缓存只会不断堆积 DOM，不缓存 -->
+          <KeepAlive :max="6" :exclude="['BlogDetail', 'Docs', 'LegalPage']">
             <component :is="Component" :key="route.path" />
           </KeepAlive>
         </Transition>

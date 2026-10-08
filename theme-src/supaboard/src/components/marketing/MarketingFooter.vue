@@ -32,7 +32,7 @@ const isAuthed = computed(() => !!state.user)
             :href="siteConfig.links.twitter"
             target="_blank"
             rel="noopener noreferrer"
-            class="sb-icon-tile bg-white text-foreground hover:-translate-y-0.5 transition-transform"
+            class="sb-icon-tile bg-card text-foreground hover:-translate-y-0.5 transition-transform"
             title="Twitter / X"
           >
             <Icon name="twitter" :size="18" />
@@ -42,7 +42,7 @@ const isAuthed = computed(() => !!state.user)
             :href="siteConfig.links.github"
             target="_blank"
             rel="noopener noreferrer"
-            class="sb-icon-tile bg-white text-foreground hover:-translate-y-0.5 transition-transform"
+            class="sb-icon-tile bg-card text-foreground hover:-translate-y-0.5 transition-transform"
             title="GitHub"
           >
             <Icon name="github" :size="18" />
@@ -52,7 +52,7 @@ const isAuthed = computed(() => !!state.user)
             :href="siteConfig.links.telegram"
             target="_blank"
             rel="noopener noreferrer"
-            class="sb-icon-tile bg-white text-foreground hover:-translate-y-0.5 transition-transform"
+            class="sb-icon-tile bg-card text-foreground hover:-translate-y-0.5 transition-transform"
             title="Telegram"
           >
             <Icon name="telegram" :size="18" />
@@ -62,7 +62,7 @@ const isAuthed = computed(() => !!state.user)
             :href="siteConfig.links.discord"
             target="_blank"
             rel="noopener noreferrer"
-            class="sb-icon-tile bg-white text-foreground hover:-translate-y-0.5 transition-transform"
+            class="sb-icon-tile bg-card text-foreground hover:-translate-y-0.5 transition-transform"
             title="Discord"
           >
             <Icon name="discord" :size="18" />

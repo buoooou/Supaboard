@@ -161,7 +161,7 @@ const faqs = [
     <!-- 装饰光晕背景 -->
     <div class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
       <div class="absolute -left-12 top-[8%] h-72 w-72 rounded-full bg-tertiary/20 blur-3xl" />
-      <div class="absolute -right-12 bottom-[25%] h-96 w-96 rounded-full bg-secondary/20 blur-3xl animate-pulse-slow" />
+      <div class="absolute -right-12 bottom-[25%] h-96 w-96 rounded-full bg-secondary/20 blur-3xl" />
       <div class="absolute left-1/4 top-1/4 h-4 w-4 rounded-full bg-primary opacity-40" />
       <div class="absolute right-1/4 top-1/3 h-8 w-8 rotate-12 rounded-lg border-4 border-tertiary opacity-40" />
       <div class="absolute bottom-1/4 left-1/3 h-6 w-6 rotate-45 bg-quaternary opacity-40" />
@@ -203,7 +203,7 @@ const faqs = [
 
             <RouterLink
               to="/download"
-              class="inline-flex select-none items-center justify-center gap-2 rounded-full border-2 bg-white px-7 py-3.5 font-heading text-base font-bold text-foreground hover:bg-tertiary hover:text-white transition-all duration-200 shadow-[3px_3px_0px_0px_var(--ink)]"
+              class="inline-flex select-none items-center justify-center gap-2 rounded-full border-2 bg-card px-7 py-3.5 font-heading text-base font-bold text-foreground hover:bg-tertiary hover:text-white transition-all duration-200 shadow-[3px_3px_0px_0px_var(--ink)]"
               style="border-color: var(--ink)"
             >
               <Icon name="download" :size="18" />
@@ -285,7 +285,7 @@ const faqs = [
               class="flex items-start gap-4"
             >
               <div
-                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-2 bg-white shadow-[2px_2px_0px_0px_var(--ink)]"
+                class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border-2 bg-card shadow-[2px_2px_0px_0px_var(--ink)]"
                 :class="item.color"
                 style="border-color: var(--ink)"
               >
@@ -301,7 +301,7 @@ const faqs = [
 
         <div class="relative">
           <div
-            class="sticker-card aspect-video flex items-center justify-center overflow-hidden bg-foreground p-0 text-white"
+            class="sticker-card aspect-video flex items-center justify-center overflow-hidden bg-slate-800 p-0 text-white"
           >
             <div class="absolute inset-0 dot-grid opacity-20" />
             <div class="relative z-10 text-center p-6">
@@ -512,7 +512,7 @@ const faqs = [
         <div class="relative w-full max-w-[260px] aspect-square flex items-center justify-center">
           <div class="blob-radius absolute inset-0 bg-primary/20 animate-pulse-slow" />
           <div
-            class="sticker-card relative z-10 flex h-44 w-44 rotate-3 items-center justify-center bg-white text-center shadow-[6px_6px_0px_0px_var(--ink)]"
+            class="sticker-card relative z-10 flex h-44 w-44 rotate-3 items-center justify-center bg-card text-center shadow-[6px_6px_0px_0px_var(--ink)]"
           >
             <div>
               <div class="font-heading text-5xl font-black text-primary">15%</div>
@@ -528,7 +528,7 @@ const faqs = [
     <!-- 7. TG ROBOT 电报机器人服务 -->
     <section class="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 cv-auto">
       <div
-        class="sticker-card relative flex flex-col items-center gap-10 overflow-hidden bg-foreground p-8 text-white sm:p-12 md:p-16 lg:flex-row"
+        class="sticker-card relative flex flex-col items-center gap-10 overflow-hidden bg-slate-800 p-8 text-white sm:p-12 md:p-16 lg:flex-row"
       >
         <div class="absolute -right-32 -top-32 h-80 w-80 rounded-full bg-primary/20 blur-3xl" />
 
