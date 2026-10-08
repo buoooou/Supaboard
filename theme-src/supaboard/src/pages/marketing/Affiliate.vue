@@ -139,7 +139,7 @@ const steps = [
         <div class="absolute inset-0 dot-grid opacity-30" />
         <div class="relative z-10 text-center">
           <div
-            class="sticker-card -rotate-3 bg-white p-8 text-foreground transition-transform hover:rotate-0"
+            class="sticker-card -rotate-3 bg-card p-8 text-foreground transition-transform hover:rotate-0"
           >
             <div class="font-heading text-6xl font-black text-primary">¥100</div>
             <div class="mt-2 font-heading text-xs font-bold uppercase tracking-widest text-muted-foreground">
@@ -181,7 +181,7 @@ const steps = [
 
     <!-- BOTTOM CTA -->
     <section class="text-center">
-      <div class="sticker-card bg-foreground p-10 text-white sm:p-16">
+      <div class="sticker-card bg-slate-800 p-10 text-white sm:p-16">
         <h2 class="mb-6 font-heading text-3xl font-black leading-tight sm:text-4xl md:text-5xl">
           {{ t('还在等什么？') }} <br />
           <span class="text-primary">{{ t('现在就去生成你的专属链接！') }}</span>
@@ -189,7 +189,7 @@ const steps = [
         <div class="mt-8 flex flex-wrap justify-center gap-4">
           <RouterLink
             :to="isAuthed ? '/invite' : '/login'"
-            class="candy-button bg-white text-foreground hover:bg-tertiary hover:text-white"
+            class="candy-button bg-card text-foreground hover:bg-tertiary hover:text-white"
           >
             {{ isAuthed ? t('前往「我的邀请」获取链接') : t('立即登录获取链接') }}
           </RouterLink>

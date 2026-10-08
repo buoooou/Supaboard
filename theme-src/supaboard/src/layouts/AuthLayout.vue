@@ -14,7 +14,7 @@ const features = [
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <header class="sticky top-0 z-30 border-b-2 bg-background/90 backdrop-blur" style="border-color: var(--ink)">
+    <header class="sticky top-0 z-30 border-b-2 bg-background" style="border-color: var(--ink)">
       <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <RouterLink to="/" class="flex items-center">
           <Logo />

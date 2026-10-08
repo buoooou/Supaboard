@@ -28,9 +28,8 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-C156V21PNC', {
-      page_path: window.location.pathname,
-    });
+    // 页面浏览由 router.afterEach 上报（含首屏），这里不再重复发送
+    gtag('config', 'G-C156V21PNC', { send_page_view: false });
     (function () {
       function loadGA() {
         var s = document.createElement('script');

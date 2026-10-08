@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 import { getToken } from '@/utils/storage'
 import { appTitle } from '@/stores/app'
-import { t } from '@/i18n'
+import { i18nReady, t } from '@/i18n'
 
 /**
  * 路由配置：
@@ -96,14 +96,17 @@ router.beforeEach((to) => {
 })
 
 router.afterEach((to) => {
-  const title = to.meta.title as string | undefined
-  document.title = title ? `${t(title)} - ${appTitle}` : appTitle
+  // 首个路由可能先于语言字典就绪，等字典加载完再取标题
+  i18nReady.then(() => {
+    const title = to.meta.title as string | undefined
+    document.title = title ? `${t(title)} - ${appTitle}` : appTitle
 
-  // SPA 路由切换时向 Google Analytics 同步上报页面浏览 (GA4: G-C156V21PNC)
-  if (typeof (window as any).gtag === 'function') {
-    ;(window as any).gtag('config', 'G-C156V21PNC', {
-      page_path: window.location.pathname + window.location.search + window.location.hash,
-      page_title: document.title,
-    })
-  }
+    // SPA 路由切换时向 Google Analytics 同步上报页面浏览 (GA4: G-C156V21PNC)
+    if (typeof (window as any).gtag === 'function') {
+      ;(window as any).gtag('config', 'G-C156V21PNC', {
+        page_path: window.location.pathname + window.location.search + window.location.hash,
+        page_title: document.title,
+      })
+    }
+  })
 })
