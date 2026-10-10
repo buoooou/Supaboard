@@ -27,6 +27,8 @@ class OrderService
     ];
     public $order;
     public $user;
+    // 本次开通是否为一次性套餐的流量叠加（叠加时跳过续费重置事件）
+    private bool $trafficStacked = false;
 
     public function __construct(Order $order)
     {
@@ -113,7 +115,7 @@ class OrderService
             }
 
             match ((string) $order->period) {
-                Plan::PERIOD_ONETIME => $this->buyByOneTime($plan),
+                Plan::PERIOD_ONETIME => $this->buyByOneTime($order, $plan),
                 Plan::PERIOD_RESET_TRAFFIC => app(TrafficResetService::class)->performReset($this->user, TrafficResetLog::SOURCE_ORDER),
                 default => $this->buyByPeriod($order, $plan),
             };
@@ -138,7 +140,7 @@ class OrderService
             default => 0,
         };
 
-        if ($eventId) {
+        if ($eventId && !$this->trafficStacked) {
             $this->openEvent($eventId);
         }
 
@@ -231,12 +233,18 @@ class OrderService
             $nowUserTraffic = Helper::transferToGB($user->transfer_enable);
             if (!$nowUserTraffic)
                 return;
-            $paidTotalAmount = ($lastOneTimeOrder->total_amount + $lastOneTimeOrder->balance_amount);
-            if (!$paidTotalAmount)
-                return;
-            $trafficUnitPrice = $paidTotalAmount / $nowUserTraffic;
             $notUsedTraffic = $nowUserTraffic - Helper::transferToGB($user->u + $user->d);
-            $result = $trafficUnitPrice * $notUsedTraffic;
+            $lastOrderTraffic = (float) optional(Plan::find($lastOneTimeOrder->plan_id))->transfer_enable;
+            if ($nowUserTraffic > $lastOrderTraffic) {
+                // 流量叠加过：剩余流量按订单从新到旧逐笔折算
+                $result = $this->getStackedOneTimeSurplus($user, $notUsedTraffic);
+            } else {
+                $paidTotalAmount = ($lastOneTimeOrder->total_amount + $lastOneTimeOrder->balance_amount);
+                if (!$paidTotalAmount)
+                    return;
+                $trafficUnitPrice = $paidTotalAmount / $nowUserTraffic;
+                $result = $trafficUnitPrice * $notUsedTraffic;
+            }
             $order->surplus_amount = (int) ($result > 0 ? $result : 0);
             $order->surplus_order_ids = Order::where('user_id', $user->id)
                 ->where('period', '!=', Plan::PERIOD_RESET_TRAFFIC)
@@ -281,6 +289,32 @@ class OrderService
             $order->surplus_amount = (int) max(0, $orderAmountSum * $ratio);
             $order->surplus_order_ids = $orders->pluck('id')->all();
         }
+    }
+
+    /**
+     * 叠加后的剩余流量价值：先用掉的是旧订单的流量，剩余流量属于最近的订单，
+     * 从最新的一次性订单往前逐笔按各自单价折算，直到覆盖剩余流量
+     */
+    private function getStackedOneTimeSurplus(User $user, float $notUsedTraffic): float
+    {
+        $orders = Order::where('user_id', $user->id)
+            ->where('period', Plan::PERIOD_ONETIME)
+            ->where('status', Order::STATUS_COMPLETED)
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $result = 0;
+        foreach ($orders as $item) {
+            if ($notUsedTraffic <= 0)
+                break;
+            $orderTraffic = (float) optional(Plan::find($item->plan_id))->transfer_enable;
+            if ($orderTraffic <= 0)
+                continue;
+            $traffic = min($notUsedTraffic, $orderTraffic);
+            $result += ($item->total_amount + $item->balance_amount) / $orderTraffic * $traffic;
+            $notUsedTraffic -= $traffic;
+        }
+        return $result;
     }
 
     public function paid(string $callbackNo)
@@ -353,10 +387,23 @@ class OrderService
         $this->user->expired_at = $this->getTime($order->period, $this->user->expired_at);
     }
 
-    private function buyByOneTime(Plan $plan)
+    private function buyByOneTime(Order $order, Plan $plan)
     {
+        $planTraffic = $plan->transfer_enable * 1073741824;
+        // 一次性套餐续购同一套餐：保留已用流量，在剩余流量上叠加（超用部分不扣减）
+        if (
+            (int) $order->type === Order::TYPE_RENEWAL
+            && (int) $this->user->plan_id === (int) $plan->id
+            && $this->user->expired_at === NULL
+        ) {
+            $used = $this->user->u + $this->user->d;
+            $this->user->transfer_enable = max($this->user->transfer_enable, $used) + $planTraffic;
+            $this->user->group_id = $plan->group_id;
+            $this->trafficStacked = true;
+            return;
+        }
         app(TrafficResetService::class)->performReset($this->user, TrafficResetLog::SOURCE_ORDER);
-        $this->user->transfer_enable = $plan->transfer_enable * 1073741824;
+        $this->user->transfer_enable = $planTraffic;
         $this->user->plan_id = $plan->id;
         $this->user->group_id = $plan->group_id;
         $this->user->expired_at = NULL;
