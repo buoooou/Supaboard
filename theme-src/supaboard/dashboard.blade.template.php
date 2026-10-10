@@ -11,6 +11,18 @@
           \Illuminate\Support\Facades\Log::warning('Supaboard theme resync failed: ' . $__e->getMessage());
       }
   }
+  // 预渲染页面（构建期生成，见 theme-src/supaboard/scripts/prerender.mjs）：按请求路径取标题、描述与正文
+  $__path = trim(request()->path(), '/');
+  $__page = null;
+  if ($__path === '' || preg_match('#^[A-Za-z0-9_-]+(/[A-Za-z0-9_-]+)*$#', $__path)) {
+      $__themePath = app(\App\Services\ThemeService::class)->getThemePath($theme);
+      $__pageFile = $__themePath . '/prerender/pages/' . ($__path === '' ? 'index' : $__path) . '.json';
+      if ($__themePath && is_file($__pageFile)) {
+          $__page = json_decode(file_get_contents($__pageFile), true);
+      }
+  }
+  // 后端注册了 theme.page 兜底路由才能响应 /blog/xxx 这类真实路径，否则保持 hash 路由
+  $__history = \Illuminate\Support\Facades\Route::has('theme.page');
   $__settings = [
       'title' => $title,
       'assets_path' => '/theme/' . $theme . '/assets',
@@ -24,6 +36,7 @@
           'download_url' => $theme_config['download_url'] ?? '',
       ],
       'i18n' => ['zh-CN', 'zh-TW', 'en-US'],
+      'routing' => $__history ? 'history' : 'hash',
   ];
 @endphp
 <!doctype html>
@@ -31,8 +44,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" />
-  <meta name="description" content="{{ $description }}" />
+  @if ($__page)
+  <title>{{ $__page['title'] }}</title>
+  <meta name="description" content="{{ $__page['description'] }}" />
+  <link rel="canonical" href="{{ $__page['canonical'] }}" />
+  <meta property="og:type" content="{{ $__page['type'] }}" />
+  <meta property="og:site_name" content="{{ $__page['site_name'] }}" />
+  <meta property="og:title" content="{{ $__page['title'] }}" />
+  <meta property="og:description" content="{{ $__page['description'] }}" />
+  <meta property="og:url" content="{{ $__page['canonical'] }}" />
+  <meta property="og:image" content="{{ $__page['image'] }}" />
+  <meta name="twitter:card" content="summary_large_image" />
+  @if (!empty($__page['json_ld']))
+  <script type="application/ld+json">{!! $__page['json_ld'] !!}</script>
+  @endif
+  @else
   <title>{{ $title }}</title>
+  <meta name="description" content="{{ $description }}" />
+  @if ($__path !== '')
+  {{-- 登录、注册、控制台等纯前端页面没有可收录的内容 --}}
+  <meta name="robots" content="noindex" />
+  @endif
+  @endif
   @if (!empty($logo))
   <link rel="icon" href="{{ $logo }}" />
   @endif
@@ -76,6 +109,11 @@
 </head>
 <body>
   <div id="app">
+    {{-- 预渲染正文里的站内链接是真实路径，只在后端能响应这些路径时输出 --}}
+    @if ($__page && $__history)
+    {{-- email_off：不让 Cloudflare 把正文里的邮箱改写成 /cdn-cgi/l/email-protection 链接（爬虫访问是 404） --}}
+    <!--email_off-->{!! $__page['html'] !!}<!--/email_off-->
+    @else
     <style>
       .sb-init-loader{display:flex;align-items:center;justify-content:center;min-height:100vh;background-color:#fffdfa;transition:background-color .2s}
       .dark .sb-init-loader{background-color:#0f172a}
@@ -85,6 +123,7 @@
     <div class="sb-init-loader">
       <div class="sb-init-spinner"></div>
     </div>
+    @endif
   </div>
   {!! $theme_config['custom_html'] ?? '' !!}
 </body>

@@ -18,6 +18,8 @@ interface SupaboardSettings {
     download_url: string
   }
   i18n: string[]
+  /** 后端支持真实路径时为 history，缺省为 hash */
+  routing?: 'history' | 'hash'
 }
 
 interface Window {

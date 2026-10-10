@@ -1,36 +1,36 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import Icon from '@/components/Icon.vue'
-import { blogPosts, type BlogPost } from '@/utils/content'
+import { BLOG_PAGE_SIZE, blogPosts, getBlogPageCount, getBlogPagePath } from '@/utils/blog'
+import { usePageSeo } from '@/utils/seo'
 import { t } from '@/i18n'
 
+const route = useRoute()
 const search = ref('')
-const currentPage = ref(1)
-const pageSize = 9
+const totalPages = getBlogPageCount()
 
-const filteredPosts = computed(() => {
-  const kw = search.value.trim().toLowerCase()
-  if (!kw) return blogPosts
-  return blogPosts.filter(
-    (p) => p.title.toLowerCase().includes(kw) || (p.description && p.description.toLowerCase().includes(kw)),
-  )
-})
+const currentPage = computed(() => Math.max(1, Math.min(Number(route.params.page) || 1, totalPages)))
+const keyword = computed(() => search.value.trim().toLowerCase())
 
-const totalPages = computed(() => Math.ceil(filteredPosts.value.length / pageSize) || 1)
-
+// 搜索时直接列出全部命中结果，不分页
 const paginatedPosts = computed(() => {
-  const start = (currentPage.value - 1) * pageSize
-  return filteredPosts.value.slice(start, start + pageSize)
+  const kw = keyword.value
+  if (kw) {
+    return blogPosts.filter(
+      (p) => p.title.toLowerCase().includes(kw) || (p.description && p.description.toLowerCase().includes(kw)),
+    )
+  }
+  const start = (currentPage.value - 1) * BLOG_PAGE_SIZE
+  return blogPosts.slice(start, start + BLOG_PAGE_SIZE)
 })
 
-function onSearch() {
-  currentPage.value = 1
-}
-
-function setPage(p: number) {
-  currentPage.value = Math.max(1, Math.min(p, totalPages.value))
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-}
+usePageSeo(() => ({
+  title:
+    currentPage.value > 1 ? `博客 — 第 ${currentPage.value} 页` : '博客 — 翻墙教程与网络加速干货',
+  description:
+    'Supaboard 博客：Clash、Shadowrocket、v2rayN 等客户端配置教程，机场与 VPS 选购评测，ChatGPT 与 Netflix 解锁方案，以及代理连接故障排查与隐私安全指南。',
+}))
 </script>
 
 <template>
@@ -60,7 +60,6 @@ function setPage(p: number) {
             type="search"
             class="sb-input pl-11 pr-4 py-3 rounded-full text-base"
             :placeholder="t('搜索文章关键词...')"
-            @input="onSearch"
           />
         </div>
       </div>
@@ -117,30 +116,28 @@ function setPage(p: number) {
     </div>
 
     <!-- 分页导航 -->
-    <div v-if="totalPages > 1" class="mt-14 flex items-center justify-center gap-2">
-      <button
-        type="button"
-        class="sb-btn sb-btn-outline sb-btn-sm"
-        :disabled="currentPage <= 1"
-        @click="setPage(currentPage - 1)"
-      >
+    <nav v-if="!keyword && totalPages > 1" class="mt-14 flex items-center justify-center gap-2">
+      <RouterLink v-if="currentPage > 1" :to="getBlogPagePath(currentPage - 1)" class="sb-btn sb-btn-outline sb-btn-sm">
         <Icon name="chevron-left" :size="14" />
         <span>{{ t('上一页') }}</span>
-      </button>
+      </RouterLink>
+      <span v-else class="sb-btn sb-btn-outline sb-btn-sm pointer-events-none opacity-50">
+        <Icon name="chevron-left" :size="14" />
+        <span>{{ t('上一页') }}</span>
+      </span>
 
       <span class="px-4 text-sm font-bold font-mono">
         {{ currentPage }} / {{ totalPages }}
       </span>
 
-      <button
-        type="button"
-        class="sb-btn sb-btn-outline sb-btn-sm"
-        :disabled="currentPage >= totalPages"
-        @click="setPage(currentPage + 1)"
-      >
+      <RouterLink v-if="currentPage < totalPages" :to="getBlogPagePath(currentPage + 1)" class="sb-btn sb-btn-outline sb-btn-sm">
         <span>{{ t('下一页') }}</span>
         <Icon name="chevron-right" :size="14" />
-      </button>
-    </div>
+      </RouterLink>
+      <span v-else class="sb-btn sb-btn-outline sb-btn-sm pointer-events-none opacity-50">
+        <span>{{ t('下一页') }}</span>
+        <Icon name="chevron-right" :size="14" />
+      </span>
+    </nav>
   </div>
 </template>

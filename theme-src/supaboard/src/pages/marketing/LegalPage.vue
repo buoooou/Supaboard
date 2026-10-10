@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { legalPages } from '@/utils/content'
 import { renderMarkdown } from '@/utils/markdown'
+import { usePageSeo } from '@/utils/seo'
 import { t } from '@/i18n'
 
 const props = defineProps<{
@@ -11,6 +12,8 @@ const props = defineProps<{
 const pageData = computed(() => {
   return legalPages[props.page]
 })
+
+usePageSeo(() => pageData.value && { title: pageData.value.title, description: pageData.value.description })
 
 const renderedBody = computed(() => {
   return renderMarkdown(pageData.value?.body || '')

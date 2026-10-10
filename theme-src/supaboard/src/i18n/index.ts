@@ -33,6 +33,8 @@ export async function loadLang(code: string): Promise<void> {
 const LANG_KEY = 'SUPABOARD_LANG'
 
 function detect(): string {
+  // 预渲染固定输出简体中文
+  if (import.meta.env.SSR) return 'zh-CN'
   try {
     const saved = localStorage.getItem(LANG_KEY)
     if (saved && LANGS.some((l) => l.code === saved)) return saved

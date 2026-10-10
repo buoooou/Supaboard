@@ -89,7 +89,7 @@ const isAuthed = computed(() => !!state.user)
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/pricing" class="text-muted-foreground hover:text-primary transition-colors">
+              <RouterLink :to="{ path: '/', query: { scroll: 'pricing' } }" class="text-muted-foreground hover:text-primary transition-colors">
                 {{ t('价格方案') }}
               </RouterLink>
             </li>

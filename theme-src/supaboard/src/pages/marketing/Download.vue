@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Icon from '@/components/Icon.vue'
+import { routeHref } from '@/utils/routing'
 import { t } from '@/i18n'
 
 const R2_BASE_URL = 'https://img.buoucoding.com/vpn/app'
@@ -15,14 +16,14 @@ const platforms = [
         title: 'Shadowrocket (小火箭) / Clash Mi',
         desc: '最经典、最普及的代理软件，支持几乎所有主流协议。（需美区/港区 App Store 购买，约 $2.99）',
         links: [
-          { text: '共享账号获取与使用指南', href: '#/blog/shadowrocket-shared-apple-id-guide', icon: 'book', isExternal: false },
+          { text: '共享账号获取与使用指南', href: routeHref('/blog/shadowrocket-shared-apple-id-guide'), icon: 'book', isExternal: false },
         ],
       },
       {
         title: 'Stash / Quantumult X / Loon',
         desc: '支持分流规则及 VLESS + Reality 协议。注意部分软件历史版本协议支持情况。',
         links: [
-          { text: 'Quantumult X 新手上手教程', href: '#/blog/quantumult-x-beginner-guide', icon: 'book', isExternal: false },
+          { text: 'Quantumult X 新手上手教程', href: routeHref('/blog/quantumult-x-beginner-guide'), icon: 'book', isExternal: false },
         ],
       },
     ],

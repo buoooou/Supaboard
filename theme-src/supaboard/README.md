@@ -10,7 +10,7 @@
 
 | 项目 | 说明 |
 |---|---|
-| 路由 | 保持 hash 路由和原路径：`/#/login`、`/#/register?code=xxx`、`/#/dashboard`、`/#/plan/:id`、`/#/order/:trade_no`、`/#/ticket/:id` 等，落地页、邮件、TG 机器人里的旧链接继续可用 |
+| 路由 | 后端带有 `theme.page` 兜底路由（`ThemePageController`）时使用真实路径 `/blog/xxx`、`/login`；否则自动回退到 hash 路由。两种模式下 `/#/login`、`/#/register?code=xxx`、`/#/dashboard`、`/#/order/:trade_no` 等旧链接都继续可用 |
 | 登录态 | 与旧主题共用 `localStorage["VUE_NAIVE_ACCESS_TOKEN"]`，切换主题（包括切回旧主题）时用户不用重新登录 |
 | 邮件 / 快捷登录 | 支持 `/#/login?verify=xxx&redirect=dashboard` |
 | 接口 | 只调用后端现有的 `/api/v1` 接口，不需要改后端 |
@@ -37,6 +37,20 @@
 - 邀请：佣金统计、三级分销比例、邀请码生成与复制、佣金记录、划转到余额、申请提现
 - 个人中心：修改密码、到期 / 流量邮件提醒、Telegram 绑定、重置订阅信息
 - 深色模式、简体中文 / 繁體中文 / English、移动端适配
+
+## SEO 与预渲染
+
+`pnpm build` 结束时会用 Vue SSR 把公开页面（首页、下载、合伙人、文档、博客列表与文章、条款）预渲染到 `theme/Supaboard/prerender/`：
+
+- `pages/<路径>.json`：标题、描述、canonical、分享图、结构化数据和正文 HTML，`dashboard.blade.php` 按请求路径输出，搜索引擎不执行 JS 也能抓到内容
+- `routes.json`：交给后端的路由清单（登录、控制台等纯前端页面，以及固定跳转）
+- `sitemap.xml`：后端在 `/sitemap.xml` 输出
+
+静态页面的标题和描述写在 `src/router.ts` 的 `meta.seo`，博客、文档、条款页用 `usePageSeo()` 取自内容本身。canonical 与 sitemap 的域名取自 `src/config/site.ts` 的 `url`。新增公开页面时两者必须提供其一，否则构建会报错。
+
+后端需要 `app/Http/Controllers/ThemePageController.php` 和 `routes/web.php` 末尾的 `Route::fallback(...)->name('theme.page')`。主题先于后端上线也是安全的：没有这条路由时保持 hash 路由，只有首页带预渲染的标题、描述和 canonical。
+
+本地 `pnpm dev` 始终是 hash 路由，预渲染效果需要接后端查看。
 
 ## 开发
 

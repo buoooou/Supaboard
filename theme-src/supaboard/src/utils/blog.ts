@@ -24,6 +24,17 @@ export const blogPosts: BlogPost[] = (rawMeta as BlogPostMeta[]).map((item) => (
   image: resolveBlogImageUrl(item.image),
 }))
 
+export const BLOG_PAGE_SIZE = 9
+
+export function getBlogPageCount(): number {
+  return Math.ceil(blogPosts.length / BLOG_PAGE_SIZE) || 1
+}
+
+/** 列表分页是真实路径（/blog、/blog/page/2 …），让每篇文章都有可抓取的站内链接 */
+export function getBlogPagePath(page: number): string {
+  return page <= 1 ? '/blog' : `/blog/page/${page}`
+}
+
 export function getBlogPostBySlug(slug: string): BlogPost | undefined {
   return blogPosts.find((p) => p.slug === slug)
 }

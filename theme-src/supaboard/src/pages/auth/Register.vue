@@ -10,6 +10,7 @@ import { loadGuestConfig, state } from '@/stores/app'
 import { setToken } from '@/utils/storage'
 import { showError, toast } from '@/utils/feedback'
 import { useCountdown } from '@/utils/countdown'
+import { routeHref } from '@/utils/routing'
 import { t } from '@/i18n'
 
 const route = useRoute()
@@ -121,7 +122,7 @@ async function submit() {
         <input v-model="agree" type="checkbox" class="mt-0.5 h-4 w-4 accent-[hsl(var(--primary))]" />
         <span>
           {{ t('我已阅读并同意') }}
-          <a :href="cfg.tos_url || '#/terms'" target="_blank" rel="noopener" class="font-semibold text-primary hover:underline">{{ t('服务条款') }}</a>
+          <a :href="cfg.tos_url || routeHref('/terms')" target="_blank" rel="noopener" class="font-semibold text-primary hover:underline">{{ t('服务条款') }}</a>
         </span>
       </label>
 

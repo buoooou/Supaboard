@@ -9,6 +9,7 @@ import { siteConfig } from '@/config/site'
 import { loadUser, loadUserConfig, settings, state } from '@/stores/app'
 import { getToken } from '@/utils/storage'
 import { preloadRoute } from '@/utils/preload'
+import { routeHref } from '@/utils/routing'
 import { t } from '@/i18n'
 
 const route = useRoute()
@@ -100,7 +101,7 @@ onMounted(() => {
             </a>
             <a
               v-else-if="item.isPricing"
-              href="#/pricing"
+              :href="routeHref('/?scroll=pricing')"
               class="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors cursor-pointer"
               :class="
                 isActive(item.to)
@@ -190,7 +191,7 @@ onMounted(() => {
             </a>
             <a
               v-else-if="item.isPricing"
-              href="#/pricing"
+              :href="routeHref('/?scroll=pricing')"
               class="block rounded-xl p-3 font-semibold transition-colors cursor-pointer"
               :class="
                 isActive(item.to)

@@ -3,8 +3,10 @@ import vue from '@vitejs/plugin-vue'
 import { fileURLToPath, URL } from 'node:url'
 import fs from 'node:fs'
 import path from 'node:path'
+import { prerender } from './scripts/prerender.mjs'
 
 const THEME_NAME = 'Supaboard'
+const BASE = `/theme/${THEME_NAME}/assets/`
 const themeDir = fileURLToPath(new URL(`../../theme/${THEME_NAME}`, import.meta.url))
 
 /**
@@ -63,15 +65,17 @@ function blogMetaPlugin(): Plugin {
  * After a production build, read the Vite manifest and render
  * theme/Supaboard/dashboard.blade.php from dashboard.blade.template.php,
  * injecting the hashed entry JS/CSS file names and preload tags.
+ * Then prerender the public marketing pages into theme/Supaboard/prerender.
  */
 function bladePlugin(): Plugin {
+  let manifest: Record<string, any> = {}
   return {
     name: 'supaboard-blade',
     apply: 'build',
     writeBundle() {
       fs.mkdirSync(themeDir, { recursive: true })
       const manifestPath = path.join(themeDir, 'assets/.vite/manifest.json')
-      const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
+      manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'))
       const entry = manifest['src/main.ts']
       const tpl = fs.readFileSync(path.resolve(__dirname, 'dashboard.blade.template.php'), 'utf-8')
 
@@ -117,13 +121,16 @@ function bladePlugin(): Plugin {
       fs.writeFileSync(path.join(themeDir, 'config.json'), JSON.stringify(cfg, null, 2) + '\n')
       fs.rmSync(path.join(themeDir, 'assets/.vite'), { recursive: true, force: true })
     },
+    async closeBundle() {
+      await prerender({ themeDir, base: BASE, manifest })
+    },
   }
 }
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    base: `/theme/${THEME_NAME}/assets/`,
+    base: BASE,
     plugins: [vue(), blogMetaPlugin(), bladePlugin()],
     resolve: {
       alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },

@@ -14,6 +14,7 @@ function onKey(e: KeyboardEvent) {
 watch(
   () => props.open,
   (v) => {
+    if (import.meta.env.SSR) return
     document.body.style.overflow = v ? 'hidden' : ''
     if (v) window.addEventListener('keydown', onKey)
     else window.removeEventListener('keydown', onKey)

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import Icon from '@/components/Icon.vue'
 import { docsList, getDocBySlug } from '@/utils/content'
 import { renderMarkdown } from '@/utils/markdown'
+import { usePageSeo } from '@/utils/seo'
 import { t } from '@/i18n'
 
 const route = useRoute()
-const router = useRouter()
 
 const sidebarGroups = [
   {
@@ -40,12 +40,10 @@ const renderedBody = computed(() => {
   return renderMarkdown(currentDoc.value?.body || '')
 })
 
+usePageSeo(() => currentDoc.value && { title: currentDoc.value.title, description: currentDoc.value.description })
+
 function isCurrent(slug: string) {
   return currentSlug.value === slug
-}
-
-function selectDoc(slug: string) {
-  router.push(slug ? `/docs/${slug}` : '/docs')
 }
 </script>
 
@@ -67,19 +65,18 @@ function selectDoc(slug: string) {
               </div>
               <ul class="space-y-1">
                 <li v-for="item in group.items" :key="item.slug">
-                  <button
-                    type="button"
+                  <RouterLink
+                    :to="item.slug ? `/docs/${item.slug}` : '/docs'"
                     class="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-left text-sm font-semibold transition-colors"
                     :class="
                       isCurrent(item.slug)
                         ? 'bg-primary text-white shadow-[2px_2px_0px_0px_var(--ink)]'
                         : 'text-foreground hover:bg-muted'
                     "
-                    @click="selectDoc(item.slug)"
                   >
                     <Icon :name="item.icon" :size="15" />
                     <span>{{ t(item.label) }}</span>
-                  </button>
+                  </RouterLink>
                 </li>
               </ul>
             </div>

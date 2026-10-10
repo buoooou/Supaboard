@@ -1,4 +1,5 @@
 import MarkdownIt from 'markdown-it'
+import { historyMode } from './routing'
 
 type ImageResolver = (src: string) => string
 let customImageResolver: ImageResolver | null = null
@@ -17,7 +18,7 @@ md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
   if (/^https?:/i.test(href)) {
     tokens[idx].attrSet('target', '_blank')
     tokens[idx].attrSet('rel', 'noopener')
-  } else if (href.startsWith('/') && !href.startsWith('/#') && !href.startsWith('//')) {
+  } else if (!historyMode && href.startsWith('/') && !href.startsWith('/#') && !href.startsWith('//')) {
     // 转换为 hash 路由以在 SPA 内部正常跳转
     tokens[idx].attrSet('href', '#' + href)
   }
