@@ -90,3 +90,6 @@ Route::get('/' . admin_setting('secure_path', admin_setting('frontend_admin_path
 Route::get('/' . (admin_setting('subscribe_path', 's')) . '/{token}', [\App\Http\Controllers\V1\Client\ClientController::class, 'subscribe'])
     ->middleware('client')
     ->name('client.subscribe');
+
+// 主题自带的真实路径页面（博客、文档、登录页、sitemap.xml 等），只响应主题 prerender/ 里声明过的路径，其余仍然 404
+Route::fallback(\App\Http\Controllers\ThemePageController::class)->name('theme.page');
